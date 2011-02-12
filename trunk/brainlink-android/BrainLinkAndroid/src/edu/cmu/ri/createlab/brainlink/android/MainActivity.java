@@ -1,6 +1,8 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -37,15 +40,19 @@ import android.widget.Toast;
 import android.content.BroadcastReceiver;
 
 public class MainActivity extends ListActivity {
-
+	
 	private List<Map<String, Object>> mRobotList = new ArrayList<Map<String, Object>>();
 
 	private String mSelectedRobot;
 
-	// Bluetooth adapter
+	
+	public static BluetoothSocket btSocket = null;
+	
 	private BluetoothAdapter mBluetoothAdapter = null;
-	private BluetoothSocket btSocket = null;
+
 	static BluetoothDevice brainLinkBluetooth;
+
+	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private volatile boolean mBluetoothConnected = false; // flag for bluetooth
 															// connection
@@ -92,21 +99,17 @@ public class MainActivity extends ListActivity {
 		}
 	};
 
-	// private List<ListRobotItem> mRobotList;
-	// private RobotListAdapter mRobotAdapter;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        //Set full Screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+        		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// mRobotList = new ArrayList<ListRobotItem>();
-		// mRobotList = ListRobot.loadList(MainActivity.this);
-		// mRobotAdapter = new RobotListAdapter();
-		// ListView robotLv = (ListView)findViewById(R.id.robot_list);
-		// robotLv.setAdapter(mRobotAdapter);
-		// mRobotAdapter.notifyDataSetChanged();
-		// Initial the robot listview
+
 
 		initialList();
 		initialFunctionDialog();
@@ -244,9 +247,11 @@ public class MainActivity extends ListActivity {
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (brainLinkBluetooth == null
-						&& device.getName().toString().equals("FireFly-99DE")) {
+						&& device.getName().toString().contains("FireFly")) {
 					brainLinkBluetooth = device;
 					mBrainLinkDeviceFound = true;
+					
+				
 
 					Message m = new Message();
 					m.what = MainActivity.DLG_DEVICE_UNPAIRED_FOUND;
@@ -276,58 +281,7 @@ public class MainActivity extends ListActivity {
 
 	};
 
-	// private class RobotListAdapter extends BaseAdapter {
-	//
-	// @Override
-	// public int getCount() {
-	// return mRobotList != null ? mRobotList.size() : 0;
-	// }
-	//
-	// @Override
-	// public Object getItem(int arg0) {
-	// return null;
-	// }
-	//
-	// @Override
-	// public long getItemId(int arg0) {
-	// return 0;
-	// }
-	//
-	// @Override
-	// public View getView(int position, View convertView, ViewGroup parent) {
-	// ViewHolder holder;
-	// if(convertView == null) {
-	// convertView =
-	// MainActivity.this.getLayoutInflater().inflate(R.layout.list_robot, null);
-	// holder = new ViewHolder();
-	// holder.title = (TextView) convertView.findViewById(R.id.title);
-	// holder.description = (TextView) convertView.findViewById(R.id.info);
-	// holder.icon = (ImageView) convertView.findViewById(R.id.img);
-	// convertView.setTag(holder);
-	// }
-	// else {
-	// holder = (ViewHolder)convertView.getTag();
-	// }
-	//
-	// final ListRobotItem robotItem = mRobotList.get(position);
-	// final String title = robotItem.getRobotItemName();
-	// final String description = robotItem.getRobotItemDescription();
-	// final String img = robotItem.getRobotItemIcon();
-	//
-	// holder.title.setText(title);
-	// holder.description.setText(description);
-	// holder.icon.setImageResource(R.drawable.i1);
-	//
-	// return convertView;
-	// }
-	//
-	// }
-	//
-	// static class ViewHolder {
-	// TextView title;
-	// TextView description;
-	// ImageView icon;
-	// }
+
 
 	private Thread bluetoothConnectThread = new Thread() {
 
@@ -383,8 +337,30 @@ public class MainActivity extends ListActivity {
 				if (pairedDevices.size() > 0) {
 					// Loop through paired devices
 					for (BluetoothDevice device : pairedDevices) {
-						if (device.getName().toString().equals("FireFly-99DE")) {
+						if (device.getName().toString().contains("FireFly")) {
+							mBluetoothAdapter.cancelDiscovery ();
 							brainLinkBluetooth = device;
+
+
+							mBrainLinkDeviceFound = true;
+
+							
+							boolean connect = false;
+							int attempt = 0;
+							while(connect == false) {
+								attempt++;
+							try {
+								connect = true;
+								btSocket = brainLinkBluetooth.createRfcommSocketToServiceRecord(MY_UUID);
+								btSocket.connect();
+							} catch (IOException e) {
+								connect = false;
+								e.printStackTrace();
+							}
+							if(attempt>10)
+								break;
+							}
+							
 							m = new Message();
 							m.what = MainActivity.DLG_DEVICE_PAIRED_FOUND;
 							bluetoothMessageHandler.sendMessage(m);
@@ -392,9 +368,7 @@ public class MainActivity extends ListActivity {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
 							}
-
-							mBrainLinkDeviceFound = true;
-
+							
 							brainLinkFindThread.stop();
 							break;
 						}
@@ -421,8 +395,8 @@ public class MainActivity extends ListActivity {
 	};
 
 	private void initialFunctionDialog() {
-		CharSequence[] items = { "Native Control", "Import Instruction",
-				"Create Instruction" };
+		CharSequence[] items = { "Puppet Control", "Voice Control", "Joystick Control",
+				"Mimic Control", "Programmable Control" };
 		AlertDialog.Builder mybuilder;
 		mybuilder = new AlertDialog.Builder(this);
 		mybuilder.setTitle("Choose One");
@@ -435,23 +409,51 @@ public class MainActivity extends ListActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
+			Bundle bundle = new Bundle();
+			Intent i;
+			
 			switch (which) {
 			case 0:
-				// Start NativeActivity
-				Bundle bundle = new Bundle();
+				// Start PuppetActivity
 				bundle.putParcelable(BUNDLE_BLUETOOTH, brainLinkBluetooth);
 				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
 				
-				Intent i = new Intent(MainActivity.this, NativeActivity.class);
+				i = new Intent(MainActivity.this, PuppetActivity.class);
 				i.putExtras(bundle);
 				
 				startActivity(i);
 				
 				break;
 			case 1:
-
+				// Start VoiceActivity
+				bundle.putParcelable(BUNDLE_BLUETOOTH, brainLinkBluetooth);
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+				
+				i = new Intent(MainActivity.this, VoiceActivity.class);
+				i.putExtras(bundle);
+				
+				startActivity(i);
 				break;
 			case 2:
+				// Start VoiceActivity
+				bundle.putParcelable(BUNDLE_BLUETOOTH, brainLinkBluetooth);
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+				
+				i = new Intent(MainActivity.this, JoystickActivity.class);
+				i.putExtras(bundle);
+				
+				startActivity(i);
+				break;				
+				
+			case 3:
+				// Start RouteActivity
+				bundle.putParcelable(BUNDLE_BLUETOOTH, brainLinkBluetooth);
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+				
+				i = new Intent(MainActivity.this, RouteActivity.class);
+				i.putExtras(bundle);
+				
+				startActivity(i);
 				break;
 			}
 

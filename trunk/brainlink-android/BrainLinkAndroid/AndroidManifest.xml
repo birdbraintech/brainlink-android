@@ -19,7 +19,19 @@
 			android:screenOrientation="portrait">
 		</activity>
 
-		<activity android:name=".NativeActivity"
+		<activity android:name=".PuppetActivity"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".VoiceActivity"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".RouteActivity"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".JoystickActivity"
 			android:screenOrientation="portrait">
 		</activity>
 	</application>
