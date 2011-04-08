@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<TextView android:layout_width="wrap_content" android:id="@+id/topview"
+			android:layout_height="wrap_content" android:text="Mimic"
+			android:textSize="12pt" android:textColor="#FFFFFF"
+			android:background="@drawable/top_back"
+			android:layout_alignParentTop="true">
+		</TextView>
+
+
+		<edu.cmu.ri.createlab.brainlink.android.MimicView
+			android:id="@+id/mimicview" android:layout_width="fill_parent"
+			android:layout_height="435px" android:layout_alignParentBottom="true">
+		</edu.cmu.ri.createlab.brainlink.android.MimicView>
+
+	</RelativeLayout>
+</RelativeLayout>
