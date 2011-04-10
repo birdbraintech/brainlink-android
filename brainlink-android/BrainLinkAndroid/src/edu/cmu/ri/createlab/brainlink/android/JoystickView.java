@@ -4,7 +4,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
 import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 
 import android.bluetooth.BluetoothDevice;
@@ -24,7 +26,7 @@ import android.widget.Toast;
 
 public class JoystickView extends View implements Runnable {
 
-	Bitmap mBackground;
+	Bitmap mStickBackground;
 	Bitmap mDot;
 
 	Paint mTextPaint = new Paint();
@@ -34,17 +36,19 @@ public class JoystickView extends View implements Runnable {
 	boolean mTouchCondition = false;
 
 	private BrainLinkRobot mRobot;
-
-	private String mRobotName;
 	
+	Bitmap mBackground;
 
 	public JoystickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		Resources r = context.getResources();
 
-		mBackground = BitmapFactory.decodeStream(r
+		mBackground = BitmapFactory.decodeResource(getResources(),
+				R.drawable.control_background);
+		mStickBackground = BitmapFactory.decodeStream(r
 				.openRawResource(R.drawable.joystick_back));
+		
 		mDot = BitmapFactory.decodeStream(r
 				.openRawResource(R.drawable.joystic_dot));
 
@@ -56,19 +60,28 @@ public class JoystickView extends View implements Runnable {
 		mTextPaint.setStyle(Style.FILL);
 		mTextPaint.setTextSize(30);
 
-		initialRobot();
 		Thread thread = new Thread(this);
 		thread.start();
+		
 	}
 
-	private void initialRobot() {
-		mRobot= (BrainLinkRobot)new RobotRobosapien();
+	public void initialRobot(String s) {
+		if(s.equals("walle")) {
+			mRobot = (BrainLinkRobot)new WallE();
+		}
+		else if(s.equals("robosapien")) {
+			mRobot= (BrainLinkRobot)new RobotRobosapien();
+		}
+		else if(s.equals("bossanova")) {
+			mRobot= (BrainLinkRobot)new BossaNova();
+		}
 		
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawBitmap(mBackground, 0, 0, null);
+		canvas.drawBitmap(mStickBackground, 0,0, null);
 		canvas.drawBitmap(mDot, mDotx, mDoty, null);
 		canvas.drawText(mText, 10, 30, mTextPaint);
 	}
@@ -139,6 +152,7 @@ public class JoystickView extends View implements Runnable {
 		return 0;
 	}
 
+	
 	@Override
 	public void run() {
 		while (true) {

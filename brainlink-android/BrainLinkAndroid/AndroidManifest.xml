@@ -27,13 +27,18 @@
 			android:screenOrientation="portrait">
 		</activity>
 
-		<activity android:name=".RouteActivity"
+		<activity android:name=".ProgrammableActivity"
 			android:screenOrientation="portrait">
 		</activity>
 
 		<activity android:name=".JoystickActivity"
 			android:screenOrientation="portrait">
 		</activity>
+		
+		<activity android:name=".MimicActivity"
+			android:screenOrientation="portrait">
+		</activity>
+		
 	</application>
 
 
