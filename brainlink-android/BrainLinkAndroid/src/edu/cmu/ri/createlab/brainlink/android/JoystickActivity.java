@@ -71,9 +71,11 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 			}
 			case MotionEvent.ACTION_UP: {
 				if (event.getX() - sx > 0) {
-//					i = new Intent(this, ProgrammableActivity.class);
-//					i.putExtras(bundle);
-//					startActivity(i);	
+					i = new Intent(this, VoiceActivity.class);
+					i.putExtras(bundle);
+					startActivity(i);
+					overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+					finish();
 				} else {
 					i = new Intent(this, MimicActivity.class);
 					i.putExtras(bundle);

@@ -17,11 +17,17 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class VoiceActivity extends Activity{
+public class VoiceActivity extends Activity implements OnTouchListener{
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 4321;
     
 	private Bundle bundle;
@@ -30,24 +36,45 @@ public class VoiceActivity extends Activity{
 
 	private String mRobotName;
 	
+	Button start;
+	TextView topView;
+	int sx = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         //Set full Screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
-        		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+		initializeWindow();
+		
 		setContentView(R.layout.act_voice);
 		
 		
 		initialRobot();
 
-		StartVoiceIntent();
 		
+		
+		topView = (TextView) findViewById(R.id.topview);
+		topView.setOnTouchListener(this);
+		
+		start = (Button) findViewById(R.id.btn_startvoice);
+		start.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				StartVoiceIntent();				
+			}
+			
+		});
 	}
 	
+	private void initializeWindow() {
+
+        //Set full Screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+        		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+
 	private void initialRobot() {
 		//get the data from MainActivity
 		bundle = getIntent().getExtras();
@@ -113,6 +140,35 @@ public class VoiceActivity extends Activity{
 			super.onActivityResult(requestCode, resultCode, data);
 			StartVoiceIntent();
 		}
+	}
+
+	@Override
+	public boolean onTouch(View arg0, MotionEvent event) {
+		final int action = event.getAction();
+		Intent i;
+		switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN: {
+				sx = (int) event.getX();
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				if (event.getX() - sx > 0) {
+					i = new Intent(this, PuppetActivity.class);
+					i.putExtras(bundle);
+					startActivity(i);
+					overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+					finish();
+				}
+				else  {
+					i = new Intent(this, JoystickActivity.class);
+					i.putExtras(bundle);
+					startActivity(i);
+					finish();					
+				}
+				break;
+			}
+		}
+		return true;
 	}
 
 }
