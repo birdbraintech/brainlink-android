@@ -110,22 +110,113 @@ public class RobotRobosapien extends BrainLinkRobot{
     }
 	@Override
 	public void programLeft() {
-		// TODO Auto-generated method stub
+		if(mRobotOrientation == ORIENTATION_UP) {
+				moveLeft();
+				try {
+					Thread.sleep(4500);
+				} catch (InterruptedException e) {}
+		}
+		else if (mRobotOrientation == ORIENTATION_DOWN) {
+				moveRight();
+				try {
+					Thread.sleep(4500);
+				} catch (InterruptedException e) {}
+		}
+		else if(mRobotOrientation == ORIENTATION_RIGHT) {
+				moveLeft();
+				try {
+					Thread.sleep(9000);
+				} catch (InterruptedException e) {}
+		}
+		mRobotOrientation = ORIENTATION_LEFT;		
+		moveForward();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+
 		
 	}
 	@Override
 	public void programRight() {
-		// TODO Auto-generated method stub
+		if(mRobotOrientation == ORIENTATION_UP) {
+			moveRight();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if (mRobotOrientation == ORIENTATION_DOWN) {
+			moveLeft();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if(mRobotOrientation == ORIENTATION_LEFT) {
+			moveLeft();
+			try {
+				Thread.sleep(9000);
+			} catch (InterruptedException e) {}
+	}
+	moveForward();
+	try {
+		Thread.sleep(2000);
+	} catch (InterruptedException e) {}
+	mRobotOrientation = ORIENTATION_RIGHT;
 		
 	}
+	
 	@Override
 	public void programUp() {
-		// TODO Auto-generated method stub
+		if(mRobotOrientation == ORIENTATION_LEFT) {
+			moveRight();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if (mRobotOrientation == ORIENTATION_RIGHT) {
+			moveLeft();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if(mRobotOrientation == ORIENTATION_DOWN) {
+			moveLeft();
+			try {
+				Thread.sleep(9000);
+			} catch (InterruptedException e) {}
+	}
+	mRobotOrientation = ORIENTATION_UP;	
+	moveForward();
+	try {
+		Thread.sleep(2000);
+	} catch (InterruptedException e) {}
 		
 	}
+	
 	@Override
 	public void programDown() {
-		// TODO Auto-generated method stub
+		if(mRobotOrientation == ORIENTATION_LEFT) {
+			moveLeft();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if (mRobotOrientation == ORIENTATION_RIGHT) {
+			moveRight();
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {}
+	}
+	else if(mRobotOrientation == ORIENTATION_UP) {
+			moveLeft();
+			try {
+				Thread.sleep(9000);
+			} catch (InterruptedException e) {}
+	}
+	mRobotOrientation = ORIENTATION_DOWN;
+	moveForward();
+	try {
+		Thread.sleep(2000);
+	} catch (InterruptedException e) {}
 		
 	}
 }

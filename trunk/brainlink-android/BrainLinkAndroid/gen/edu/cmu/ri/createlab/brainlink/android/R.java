@@ -52,11 +52,11 @@ public final class R {
         public static final int up=0x7f020015;
     }
     public static final class id {
-        public static final int GridView=0x7f070010;
         public static final int addnewrobots=0x7f070014;
         public static final int btn_action=0x7f070006;
         public static final int btn_clear=0x7f070007;
         public static final int btn_go=0x7f070004;
+        public static final int btn_startvoice=0x7f070010;
         public static final int btn_undo=0x7f070005;
         public static final int img=0x7f070011;
         public static final int info=0x7f070013;
@@ -80,11 +80,10 @@ public final class R {
         public static final int act_mimic=0x7f030002;
         public static final int act_programmable=0x7f030003;
         public static final int act_puppet=0x7f030004;
-        public static final int act_route=0x7f030005;
-        public static final int act_voice=0x7f030006;
-        public static final int act_welcome=0x7f030007;
-        public static final int list_robot=0x7f030008;
-        public static final int menu_main=0x7f030009;
+        public static final int act_voice=0x7f030005;
+        public static final int act_welcome=0x7f030006;
+        public static final int list_robot=0x7f030007;
+        public static final int menu_main=0x7f030008;
     }
     public static final class string {
         public static final int app_name=0x7f050001;
