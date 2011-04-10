@@ -409,7 +409,7 @@ public class MainActivity extends ListActivity {
 				startActivity(i);
 				break;
 			case 4:
-				// Start RouteActivity
+				// Start Programmable
 				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
 
 				i = new Intent(MainActivity.this, ProgrammableActivity.class);
