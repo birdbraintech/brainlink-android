@@ -2,10 +2,10 @@ package edu.cmu.ri.createlab.brainlink.android;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +20,8 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 	private Bundle bundle;
 	private String mRobotName;
 	JoystickView joystickControl;
+	
+	int sx = 0;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,30 @@ public class JoystickActivity extends Activity implements OnTouchListener{
     }
     
 	@Override
-	public boolean onTouch(View arg0, MotionEvent arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean onTouch(View arg0, MotionEvent event) {
+		final int action = event.getAction();
+		Intent i;
+		switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN: {
+				sx = (int) event.getX();
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				if (event.getX() - sx > 0) {
+//					i = new Intent(this, ProgrammableActivity.class);
+//					i.putExtras(bundle);
+//					startActivity(i);	
+				} else {
+					i = new Intent(this, MimicActivity.class);
+					i.putExtras(bundle);
+					startActivity(i);
+					finish();
+
+				}
+				break;
+			}
+		}
+		return true;
 	}
 
 }

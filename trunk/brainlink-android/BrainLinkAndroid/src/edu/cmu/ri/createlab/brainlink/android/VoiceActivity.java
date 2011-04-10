@@ -38,9 +38,11 @@ public class VoiceActivity extends Activity{
         		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+		setContentView(R.layout.act_voice);
+		
 		
 		initialRobot();
-		
+
 		StartVoiceIntent();
 		
 
