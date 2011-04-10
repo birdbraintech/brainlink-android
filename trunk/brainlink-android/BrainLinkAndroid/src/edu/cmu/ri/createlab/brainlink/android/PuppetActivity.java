@@ -6,7 +6,9 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
 import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 
 import android.app.Activity;
@@ -34,12 +36,8 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 	private Button mStartButton;
 	private boolean bStartButtonPressed =false;
 
-	private BrainLinkRobot mRobot;
-	
+	private BrainLinkRobot mRobot;	
 	private Bundle bundle;
-
-
-
 	private String mRobotName;
 	
 	private SensorManager sensorManager = null;
@@ -110,7 +108,15 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 
 		mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
 
-		mRobot= (BrainLinkRobot)new RobotRobosapien();
+		if(mRobotName.equals("walle")) {
+			mRobot = (BrainLinkRobot)new WallE();
+		}
+		else if(mRobotName.equals("robosapien")) {
+			mRobot= (BrainLinkRobot)new RobotRobosapien();
+		}
+		else if(mRobotName.equals("bossanova")) {
+			mRobot= (BrainLinkRobot)new BossaNova();
+		}
 	}
 
 	private void initialWindow() {

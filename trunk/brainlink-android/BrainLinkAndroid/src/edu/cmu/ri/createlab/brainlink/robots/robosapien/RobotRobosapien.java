@@ -27,8 +27,8 @@ public class RobotRobosapien extends BrainLinkRobot{
 
     public RobotRobosapien() {
 		try {
-			outStream = MainActivity.btSocket.getOutputStream();
-			inStream = MainActivity.btSocket.getInputStream();
+			outStream = MainActivity.mBluetooth.getOutputStream();
+			inStream = MainActivity.mBluetooth.getInputStream();
 			
 			outStream.write(ROBOT_SAPIENS);
 			
@@ -108,4 +108,24 @@ public class RobotRobosapien extends BrainLinkRobot{
 			}	
     	}
     }
+	@Override
+	public void programLeft() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void programRight() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void programUp() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void programDown() {
+		// TODO Auto-generated method stub
+		
+	}
 }

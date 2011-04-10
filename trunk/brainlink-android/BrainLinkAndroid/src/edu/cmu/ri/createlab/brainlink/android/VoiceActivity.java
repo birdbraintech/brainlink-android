@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -21,25 +25,11 @@ public class VoiceActivity extends Activity{
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 4321;
     
 	private Bundle bundle;
-	
-	private BluetoothDevice brainLinkBluetooth;
-	
+
+	private BrainLinkRobot mRobot;
+
 	private String mRobotName;
-	private OutputStream outStream = null;
-	private InputStream inStream = null;
-	byte[] b = new byte[]{};
-
-	static final byte[] INITIALIZATION_COMMAND = new byte[]{0x49, 0x03, 0x49, 0x02, 0x0B, 0x6D, 0x03, ByteUtils.intToUnsignedByte(0xB6), 0x03, 0x15, 0x02, ByteUtils.intToUnsignedByte(0xD5), 0x00, ByteUtils.intToUnsignedByte(0xB6), 0x03, 0x15, 0x02, ByteUtils.intToUnsignedByte(0xE1), 0x00, 0x00};
-    static final byte[] FORWARD = new byte[]{0x69, ByteUtils.intToUnsignedByte(0xAF), ByteUtils.intToUnsignedByte(0xEF), ByteUtils.intToUnsignedByte(0xE8), 0x00, 0x00};
-
-    static final byte[] ROBOT_SAPIENS = new byte[] {0x49, 0x03, 0x49, 0x01, ByteUtils.intToUnsignedByte(0x0D), 0x05, 0x02, 0x08, 0x06, ByteUtils.intToUnsignedByte(0x83), 0x01, ByteUtils.intToUnsignedByte(0xA0), 0x01, ByteUtils.intToUnsignedByte(0xA0)};
-    static final byte[] MOVE_FORWARD = new byte[] {0x69, ByteUtils.intToUnsignedByte(0x86),  0x00, 0x00};
-    static final byte[] MOVE_BACKWARD = new byte[] {0x69, ByteUtils.intToUnsignedByte(0x87),  0x00, 0x00};
-    static final byte[] MOVE_LEFT = new byte[] {0x69, ByteUtils.intToUnsignedByte(0x88),  0x00, 0x00};
-    static final byte[] MOVE_RIGHT = new byte[] {0x69, ByteUtils.intToUnsignedByte(0x80),  0x00, 0x00};
-
-    static final byte[] MOVE_STOP = new byte[] {0x69, ByteUtils.intToUnsignedByte(0x8E),  0x00, 0x00};
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,32 +39,29 @@ public class VoiceActivity extends Activity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		
-		//get the data from MainActivity
-		bundle = getIntent().getExtras();
-		brainLinkBluetooth = (BluetoothDevice) (bundle
-				.getParcelable(MainActivity.BUNDLE_BLUETOOTH));
-		mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
-
-		try {
-			outStream = MainActivity.btSocket.getOutputStream();
-			inStream = MainActivity.btSocket.getInputStream();
-			
-			outStream.write(ROBOT_SAPIENS);
-
-			inStream.read(b);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Toast.makeText(VoiceActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-		}
-		
+		initialRobot();
 		
 		StartVoiceIntent();
 		
 
 	}
 	
+	private void initialRobot() {
+		//get the data from MainActivity
+		bundle = getIntent().getExtras();
+
+		mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
+
+		if(mRobotName.equals("walle")) {
+			mRobot = (BrainLinkRobot)new WallE();
+		}
+		else if(mRobotName.equals("robosapien")) {
+			mRobot= (BrainLinkRobot)new RobotRobosapien();
+		}
+		else if(mRobotName.equals("bossanova")) {
+			mRobot= (BrainLinkRobot)new BossaNova();
+		}	
+	}
 	void StartVoiceIntent() {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -93,27 +80,27 @@ public class VoiceActivity extends Activity{
 			for (int i = 0; i < results.size(); i++)
 			{
 				resultsString += results.get(i);
-				if(results.get(i).equals("stop")) {
-					MoveStop();
+				if(results.get(i).contains("stop")) {
+					mRobot.moveStop();
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					break;
-				} else if(results.get(i).equals("forward") || results.get(i).equals("forwards")) {
-					MoveForward();
+				} else if(results.get(i).contains("forward") || results.get(i).contains("move")) {
+					mRobot.moveForward();
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					break;
-				} else if(results.get(i).equals("backward") || results.get(i).equals("backwards")) {
-					MoveBackward();
+				} else if(results.get(i).contains("backward") || results.get(i).contains("back")) {
+					mRobot.moveBackward();
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					break;
-				} else if(results.get(i).equals("left")) {
-					MoveLeft();
+				} else if(results.get(i).contains("left")) {
+					mRobot.moveLeft();
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					break;
-				} else if(results.get(i).equals("right")) {
-					MoveRight();
+				} else if(results.get(i).contains("right")) {
+					mRobot.moveRight();
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					break;
-				} else if(results.get(i).equals("quit")) {
+				} else if(results.get(i).contains("quit")) {
 					Toast.makeText(this, results.get(i), Toast.LENGTH_LONG).show();
 					onStop();
 					break;
@@ -126,61 +113,4 @@ public class VoiceActivity extends Activity{
 		}
 	}
 
-	
-	private void MoveBackward() {
-		try {
-			outStream.write(MOVE_BACKWARD);
-			inStream.read(b);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-	}
-
-	private void MoveForward() {
-		try {
-			outStream.write(MOVE_FORWARD);
-			inStream.read(b);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	
-	private void MoveLeft() {
-		try {
-			outStream.write(MOVE_LEFT);
-			inStream.read(b);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	private void MoveRight() {
-		try {
-			outStream.write(MOVE_RIGHT);
-			inStream.read(b);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	private void MoveStop() {
-		try {
-			outStream.write(MOVE_STOP);
-			inStream.read(b);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
-	
 }
