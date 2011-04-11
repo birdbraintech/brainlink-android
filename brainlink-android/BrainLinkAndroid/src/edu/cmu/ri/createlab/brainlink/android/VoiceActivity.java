@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class VoiceActivity extends Activity implements OnTouchListener{
 	
 	Button start;
 	TextView topView;
+	ImageView left, right;
 	int sx = 0;
 	
 	@Override
@@ -55,6 +57,25 @@ public class VoiceActivity extends Activity implements OnTouchListener{
 		
 		topView = (TextView) findViewById(R.id.topview);
 		topView.setOnTouchListener(this);
+		
+		left = (ImageView) findViewById(R.id.img_left);
+		right = (ImageView) findViewById(R.id.img_right);
+		
+		left.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				shiftToLeftAct();
+			}
+		});
+		
+		right.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				shiftToRightAct();
+			}
+		});
 		
 		start = (Button) findViewById(R.id.btn_startvoice);
 		start.setOnClickListener(new OnClickListener() {
@@ -153,17 +174,10 @@ public class VoiceActivity extends Activity implements OnTouchListener{
 			}
 			case MotionEvent.ACTION_UP: {
 				if (event.getX() - sx > 0) {
-					i = new Intent(this, PuppetActivity.class);
-					i.putExtras(bundle);
-					startActivity(i);
-					overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-					finish();
+					shiftToLeftAct();
 				}
 				else  {
-					i = new Intent(this, JoystickActivity.class);
-					i.putExtras(bundle);
-					startActivity(i);
-					finish();					
+					shiftToRightAct();					
 				}
 				break;
 			}
@@ -171,4 +185,20 @@ public class VoiceActivity extends Activity implements OnTouchListener{
 		return true;
 	}
 
+	private void shiftToLeftAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), PuppetActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+		finish();
+	}
+	
+	private void shiftToRightAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), JoystickActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		finish();			
+	}
 }

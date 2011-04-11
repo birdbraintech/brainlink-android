@@ -11,7 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class JoystickActivity extends Activity implements OnTouchListener{
@@ -21,6 +23,8 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 	private String mRobotName;
 	JoystickView joystickControl;
 	
+	TextView topView;
+	ImageView left, right;
 	int sx = 0;
 	
 	@Override
@@ -54,9 +58,28 @@ public class JoystickActivity extends Activity implements OnTouchListener{
         //joyStickControl.setOnTouchListener(this);
         joystickControl.setFocusableInTouchMode(true);     
         
-        TextView topView = (TextView) findViewById(R.id.topview);
+        topView = (TextView) findViewById(R.id.topview);
         topView.setOnTouchListener(this);
         
+		left = (ImageView) findViewById(R.id.img_left);
+		right = (ImageView) findViewById(R.id.img_right);
+		
+		left.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				shiftToLeftAct();
+			}
+		});
+		
+		right.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				shiftToRightAct();
+			}
+		});
+		
         joystickControl.initialRobot(mRobotName);
     }
     
@@ -71,22 +94,29 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 			}
 			case MotionEvent.ACTION_UP: {
 				if (event.getX() - sx > 0) {
-					i = new Intent(this, VoiceActivity.class);
-					i.putExtras(bundle);
-					startActivity(i);
-					overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-					finish();
+					shiftToLeftAct();
 				} else {
-					i = new Intent(this, MimicActivity.class);
-					i.putExtras(bundle);
-					startActivity(i);
-					finish();
-
+					shiftToRightAct();
 				}
 				break;
 			}
 		}
 		return true;
 	}
-
+	private void shiftToLeftAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), VoiceActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+		finish();
+	}
+	
+	private void shiftToRightAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), MimicActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		finish();			
+	}
 }
