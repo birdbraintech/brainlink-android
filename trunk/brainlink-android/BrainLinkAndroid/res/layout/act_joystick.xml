@@ -12,6 +12,17 @@
 			android:layout_alignParentTop="true">
 		</TextView>
 
+		<ImageView android:id="@+id/img_left"
+			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_alignParentRight="true"
+			android:layout_marginRight="50px" android:layout_marginBottom="10px"
+			android:src="@drawable/left_arrow" />
+
+		<ImageView android:id="@+id/img_right"
+			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_alignParentRight="true"
+			android:layout_marginRight="10px" android:layout_marginBottom="10px"
+			android:src="@drawable/right_arrow" />
 
 		<edu.cmu.ri.createlab.brainlink.android.JoystickView
 			android:id="@+id/joystickview" android:layout_width="fill_parent"

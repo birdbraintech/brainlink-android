@@ -1,71 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:stretchColumns="1"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/control_background">
 
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090" />
-       
- <TableRow>
-        <TextView
-            android:id="@+id/orientation_label"
-            android:layout_column="1"
-            android:text="Orientation"
-            android:textSize="9pt"
-            android:padding="3dip" />
-    </TableRow>
-   
-    <TableRow>
-        <TextView
-            android:id="@+id/orient_x_label"
-            android:layout_column="1"
-            android:text="X:"
-            android:textSize="8pt"
-            android:padding="3dip" />
-        <TextView
-            android:id="@+id/orient_x_value"
-            android:gravity="right"
-            android:textSize="8pt"
-            android:padding="3dip" />
-    </TableRow>
+	<TextView android:layout_width="wrap_content" android:id="@+id/topview"
+		android:layout_height="wrap_content" android:text="Puppet"
+		android:textSize="12pt" android:textColor="#FFFFFF"
+		android:background="@drawable/top_back" android:layout_alignParentTop="true">
+	</TextView>
 
-    <TableRow>
-        <TextView
-            android:id="@+id/orient_y_label"
-            android:layout_column="1"
-            android:text="Y:"
-            android:textSize="8pt"
-            android:padding="3dip" />
-        <TextView
-            android:id="@+id/orient_y_value"
-            android:gravity="right"
-            android:textSize="8pt"
-            android:padding="3dip" />
-    </TableRow>
+	<ImageView android:id="@+id/img_right"
+	android:layout_alignBottom ="@id/topview"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentRight = "true"
+	android:layout_marginRight = "10px"
+	android:layout_marginBottom = "10px"
+	android:src="@drawable/right_arrow"
+	/>
 
-    <TableRow>
-        <TextView
-            android:id="@+id/orient_z_label"
-            android:layout_column="1"
-            android:text="Z:"
-            android:textSize="8pt"
-            android:padding="3dip" />
-        <TextView
-            android:id="@+id/orient_z_value"
-            android:gravity="right"
-            android:textSize="8pt"
-            android:padding="3dip" />
-    </TableRow>
-
-    <TableRow>
-   <Button android:id="@+id/puppet_button"
-   			android:layout_column="1"
-            android:width="100px"
-            android:height="100px"
-            android:text="Start" />
-    </TableRow>
-
-</TableLayout>
+	<Button android:id="@+id/btn_startpuppet" android:layout_width="200px"
+		android:layout_centerInParent = "true"
+		android:layout_height="wrap_content" android:text="Start" />
+		
+</RelativeLayout>

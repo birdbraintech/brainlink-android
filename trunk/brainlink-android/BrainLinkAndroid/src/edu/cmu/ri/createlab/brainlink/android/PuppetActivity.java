@@ -14,6 +14,7 @@ import edu.cmu.ri.createlab.util.ByteUtils;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,27 +22,29 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class PuppetActivity extends Activity implements SensorEventListener {
+public class PuppetActivity extends Activity implements SensorEventListener, OnTouchListener {
 
-	private TextView orientXValue;
-	private TextView orientYValue;
-	private TextView orientZValue;
-	private Button mStartButton;
 	private boolean bStartButtonPressed =false;
 
 	private BrainLinkRobot mRobot;	
 	private Bundle bundle;
 	private String mRobotName;
-	
+	int sx = 0;
 	private SensorManager sensorManager = null;
 	
+	Button start;
+	TextView topView;
+	ImageView right;
 
 
 	byte[] b = new byte[]{};
@@ -60,20 +63,20 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 		
 		initialSensor();
 		
-		mStartButton = (Button)findViewById(R.id.puppet_button);
-		mStartButton.setOnTouchListener(new View.OnTouchListener() {
+		start = (Button)findViewById(R.id.btn_startpuppet);
+		start.setOnTouchListener(new View.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					bStartButtonPressed = true;
-					mStartButton.setText("Stop");
+					start.setText("Stop");
 					break;
 				case MotionEvent.ACTION_UP:
 					bStartButtonPressed = false;
 					mRobot.moveStop();
-					mStartButton.setText("Start");
+					start.setText("Start");
 					break;
 				}
 				return false;
@@ -81,7 +84,17 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 			
 		});
 		
-	
+		topView = (TextView) findViewById(R.id.topview);
+		topView.setOnTouchListener(this);
+		
+
+		right = (ImageView) findViewById(R.id.img_right);
+		right.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				shiftToRightAct();
+			}
+		});
 
 	}
 
@@ -90,15 +103,6 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 		
 		setContentView(R.layout.act_puppet);
 
-		// Capture orientation related view elements
-		orientXValue = (TextView) findViewById(R.id.orient_x_value);
-		orientYValue = (TextView) findViewById(R.id.orient_y_value);
-		orientZValue = (TextView) findViewById(R.id.orient_z_value);
-
-		// Initialize orientation related view elements
-		orientXValue.setText("0.00");
-		orientYValue.setText("0.00");
-		orientZValue.setText("0.00");
 		
 	}
 
@@ -131,9 +135,7 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 	public void onSensorChanged(SensorEvent sensorEvent) {
 		synchronized (this) {
 			if (bStartButtonPressed == true && sensorEvent.sensor.getType() == Sensor.TYPE_ORIENTATION) {
-				orientXValue.setText(Float.toString(sensorEvent.values[0]));
-				orientYValue.setText(Float.toString(sensorEvent.values[1]));
-				orientZValue.setText(Float.toString(sensorEvent.values[2]));
+
 			}
 			
 			if(bStartButtonPressed==true && sensorEvent.values[1]>30) {
@@ -177,5 +179,32 @@ public class PuppetActivity extends Activity implements SensorEventListener {
 		
 	}
 
+	
+	private void shiftToRightAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), VoiceActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		finish();			
+	}
 
+	@Override
+	public boolean onTouch(View arg0, MotionEvent event) {
+		final int action = event.getAction();
+		Intent i;
+		switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN: {
+				sx = (int) event.getX();
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				if (event.getX() - sx > 0) {}
+				else  {
+					shiftToRightAct();					
+				}
+				break;
+			}
+		}
+		return true;
+	}
 }
