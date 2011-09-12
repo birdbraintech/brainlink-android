@@ -229,9 +229,9 @@ public class MainActivity extends ListActivity {
 			}
 		}
 		
-//		if(mBluetooth.sockectStatus()) {
-//			mBluetooth.cencelSocket();
-//		}
+		if(mBluetooth.sockectStatus()) {
+			mBluetooth.cencelSocket();
+		}
 		super.onDestroy();
 	}
 
@@ -244,7 +244,7 @@ public class MainActivity extends ListActivity {
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (!mBluetooth.getDeviceState()
-						&& device.getName().toString().contains("RN42")) {// 65E7
+						&& device.getName().toString().equals("FireFly-65E7")) {// 65E7
 																				// 99DE
 					mBluetooth.setDevice(device);
 					mBrainLinkDeviceFound = true;
@@ -323,7 +323,7 @@ public class MainActivity extends ListActivity {
 			// Scan paired devices
 			if (!mBrainLinkDeviceFound) {
 				mBrainLinkDeviceFound = mBluetooth
-						.findPairedBrainlinkDevice("RN42");// 65E7
+						.findPairedBrainlinkDevice("FireFly-65E7");// 65E7
 				boolean connect = mBluetooth.socketConnect();
 				m = new Message();
 				m.what = MainActivity.DLG_DEVICE_PAIRED_FOUND;
@@ -380,15 +380,15 @@ public class MainActivity extends ListActivity {
 				startActivity(i);
 
 				break;
-//			case 1:
-//				// Start VoiceActivity
-//				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
-//
-//				i = new Intent(MainActivity.this, VoiceActivity.class);
-//				i.putExtras(bundle);
-//
-//				startActivity(i);
-//				break;
+			case 1:
+				// Start VoiceActivity
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+
+				i = new Intent(MainActivity.this, VoiceActivity.class);
+				i.putExtras(bundle);
+
+				startActivity(i);
+				break;
 			case 2:
 				// Start VoiceActivity
 				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
@@ -399,24 +399,24 @@ public class MainActivity extends ListActivity {
 				startActivity(i);
 				break;
 
-//			case 3:
-//				// Start VoiceActivity
-//				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
-//
-//				i = new Intent(MainActivity.this, MimicActivity.class);
-//				i.putExtras(bundle);
-//
-//				startActivity(i);
-//				break;
-//			case 4:
-//				// Start Programmable
-//				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
-//
-//				i = new Intent(MainActivity.this, ProgrammableActivity.class);
-//				i.putExtras(bundle);
-//
-//				startActivity(i);
-//				break;
+			case 3:
+				// Start VoiceActivity
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+
+				i = new Intent(MainActivity.this, MimicActivity.class);
+				i.putExtras(bundle);
+
+				startActivity(i);
+				break;
+			case 4:
+				// Start Programmable
+				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
+
+				i = new Intent(MainActivity.this, ProgrammableActivity.class);
+				i.putExtras(bundle);
+
+				startActivity(i);
+				break;
 			}
 
 		}

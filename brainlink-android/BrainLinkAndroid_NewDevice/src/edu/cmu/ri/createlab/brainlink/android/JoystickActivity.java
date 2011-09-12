@@ -76,7 +76,7 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 
 			@Override
 			public void onClick(View v) {
-			//	shiftToRightAct();
+				shiftToRightAct();
 			}
 		});
 		
@@ -96,7 +96,7 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 				if (event.getX() - sx > 0) {
 					shiftToLeftAct();
 				} else {
-				//	shiftToRightAct();
+					shiftToRightAct();
 				}
 				break;
 			}
@@ -104,19 +104,19 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 		return true;
 	}
 	private void shiftToLeftAct() {
-//		Intent i;
-//		i = new Intent(getApplicationContext(), VoiceActivity.class);
-//		i.putExtras(bundle);
-//		startActivity(i);
-//		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-//		finish();
+		Intent i;
+		i = new Intent(getApplicationContext(), VoiceActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+		finish();
 	}
 	
-//	private void shiftToRightAct() {
-//		Intent i;
-//		i = new Intent(getApplicationContext(), NativeActivity.class);
-//		i.putExtras(bundle);
-//		startActivity(i);
-//		finish();			
-//	}
+	private void shiftToRightAct() {
+		Intent i;
+		i = new Intent(getApplicationContext(), MimicActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		finish();			
+	}
 }

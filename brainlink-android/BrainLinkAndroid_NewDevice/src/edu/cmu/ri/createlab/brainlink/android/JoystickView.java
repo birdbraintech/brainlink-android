@@ -4,9 +4,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
 import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 
 import android.bluetooth.BluetoothDevice;
@@ -66,16 +66,16 @@ public class JoystickView extends View implements Runnable {
 	}
 
 	public void initialRobot(String s) {
-//		if(s.equals("walle")) {
-//			mRobot = (BrainLinkRobot)new WallE();
-//		}
-		if(s.equals("robosapien")) {
+		if(s.equals("walle")) {
+			mRobot = (BrainLinkRobot)new WallE();
+		}
+		else if(s.equals("robosapien")) {
 			mRobot= (BrainLinkRobot)new RobotRobosapien();
 		}
-//		else if(s.equals("bossanova")) {
-//			mRobot= (BrainLinkRobot)new BossaNova();
-//		}
-//		
+		else if(s.equals("bossanova")) {
+			mRobot= (BrainLinkRobot)new BossaNova();
+		}
+		
 	}
 
 	@Override
