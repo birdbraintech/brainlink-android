@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robots>
+<item>
+<name>Wall-E</name>
+<description>Wall-E U Command</description>
+<icon>img_we</icon>
+</item>
+<item>
+<name>Robosapien</name>
+<description>WowWee</description>
+<icon>img_rs</icon>
+</item>
+<item>
+<name>Bossa Nova Prime-8</name>
+<description>Bossa Nova Prime-8</description>
+<icon>icon_bnp</icon>
+</item>
+</robots>
