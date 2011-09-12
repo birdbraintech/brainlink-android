@@ -6,9 +6,9 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
-import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
+//import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
 import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
-import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
+//import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 
 import android.app.Activity;
@@ -112,15 +112,15 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 
 		mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
 
-		if(mRobotName.equals("walle")) {
-			mRobot = (BrainLinkRobot)new WallE();
-		}
-		else if(mRobotName.equals("robosapien")) {
+//		if(mRobotName.equals("walle")) {
+//			mRobot = (BrainLinkRobot)new WallE();
+//		}
+		if(mRobotName.equals("robosapien")) {
 			mRobot= (BrainLinkRobot)new RobotRobosapien();
 		}
-		else if(mRobotName.equals("bossanova")) {
-			mRobot= (BrainLinkRobot)new BossaNova();
-		}
+//		else if(mRobotName.equals("bossanova")) {
+//			mRobot= (BrainLinkRobot)new BossaNova();
+//		}
 	}
 
 	private void initialWindow() {
@@ -181,11 +181,11 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 
 	
 	private void shiftToRightAct() {
-		Intent i;
-		i = new Intent(getApplicationContext(), VoiceActivity.class);
-		i.putExtras(bundle);
-		startActivity(i);
-		finish();			
+//		Intent i;
+//		i = new Intent(getApplicationContext(), VoiceActivity.class);
+//		i.putExtras(bundle);
+//		startActivity(i);
+//		finish();			
 	}
 
 	@Override
