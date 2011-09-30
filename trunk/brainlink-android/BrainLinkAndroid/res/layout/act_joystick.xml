@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<TextView android:layout_width="wrap_content" android:id="@+id/topview"
+			android:layout_height="wrap_content" android:text="Joystick"
+			android:textSize="12pt" android:textColor="#FFFFFF"
+			android:background="@drawable/top_back"
+			android:layout_alignParentTop="true">
+		</TextView>
+
+		<ImageView android:id="@+id/img_left"
+			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_alignParentRight="true"
+			android:layout_marginRight="50px" android:layout_marginBottom="10px"
+			android:src="@drawable/left_arrow" />
+
+		<ImageView android:id="@+id/img_right"
+			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_alignParentRight="true"
+			android:layout_marginRight="10px" android:layout_marginBottom="10px"
+			android:src="@drawable/right_arrow" />
+
+		<edu.cmu.ri.createlab.brainlink.android.JoystickView
+			android:id="@+id/joystickview" android:layout_width="fill_parent"
+			android:layout_height="435px" android:layout_alignParentBottom="true">
+		</edu.cmu.ri.createlab.brainlink.android.JoystickView>
+
+
+	</RelativeLayout>
+
+
+
+</RelativeLayout>
