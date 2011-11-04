@@ -1,10 +1,14 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.cmu.ri.createlab.brainlink.BluetoothConnection;
+import edu.cmu.ri.createlab.brainlink.BrainLink;
 
 
 import android.app.AlertDialog;
@@ -36,12 +40,15 @@ public class MainActivity extends ListActivity
 	private String mSelectedRobot;
 
 	public static BluetoothConnection mBluetooth;
+	
+	public static BrainLink mBrainLink;
 
 	private volatile boolean mBluetoothConnected = false; // flag for bluetooth
 															// connection
 	private volatile boolean mBrainLinkDeviceFound = false; // flag for
 															// brainlink found
-
+	private volatile boolean mBrainLinkRobotInitial = false;
+	
 	private Thread bluetoothConnectThread;
 
 	private Thread brainLinkFindThread;
@@ -81,7 +88,9 @@ public class MainActivity extends ListActivity
 					mBluetoothDialog.setMessage("Paired BrainLink Device Found");
 					mBluetoothDialog.cancel();
 					mFunctionDialog.show();
+					initializeRobot();
 					break;
+					
 				case MainActivity.DLG_DEVICE_UNPAIRED_FOUND:
 					mBluetoothDialog
 							.setMessage("Please Pair Your Android with BrainLink First");
@@ -95,11 +104,27 @@ public class MainActivity extends ListActivity
 					} 
 					catch (InterruptedException e) 
 					{
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					mBluetoothDialog.cancel();
 			}
+		}
+
+		private void initializeRobot() {
+			if(mBrainLink != null)
+				mBrainLink = null;
+			
+			// Initialize BrainLink
+			try {
+				mBrainLink = new BrainLink(mBluetooth.getInputStream(), mBluetooth.getOutputStream());
+				mBrainLinkRobotInitial = true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				mBrainLinkRobotInitial = false;
+			}
+			
+			
 		}
 	};
 
@@ -110,21 +135,25 @@ public class MainActivity extends ListActivity
 		// Set full Screen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		initialList();
-		initialFunctionDialog();
+		initializeList();
+		initializeFunctionDialog();
+		initializeBluetoothDialog();
 
+
+	}
+
+	private void initializeBluetoothDialog() {
 		mBluetoothDialog = new ProgressDialog(MainActivity.this);
 		mBluetoothDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mBluetoothDialog.setTitle("Connecting");
 		mBluetoothDialog.setMessage("Initializing");
 		mBluetoothDialog.setIndeterminate(false);
 		mBluetoothDialog.setCancelable(false);
-
+		
 	}
 
-	private void initialList() 
+	private void initializeList() 
 	{
 		SimpleAdapter adapter = new SimpleAdapter(this, getData(),
 				R.layout.list_robot, new String[] { "title", "info", "img" },
@@ -133,7 +162,7 @@ public class MainActivity extends ListActivity
 
 	}
 
-	private void initialThreads()
+	private void initializeThreads()
 	{
 		brainLinkFindThread = new Thread() 
 		{
@@ -246,7 +275,7 @@ public class MainActivity extends ListActivity
 		mRobotList.add(map);
 
 		map = new HashMap<String, Object>();
-		map.put("title", "robosapien");
+		map.put("title", "Robosapien");
 		map.put("info", "WowWee");
 		map.put("img", R.drawable.i2);
 		mRobotList.add(map);
@@ -317,7 +346,7 @@ public class MainActivity extends ListActivity
 		if(bluetoothConnectThread != null)
 			bluetoothConnectThread = null;
 		
-		initialThreads();
+		initializeThreads();
 		
 		if (bHasBluetooth) 
 		{
@@ -435,8 +464,7 @@ public class MainActivity extends ListActivity
 
 					Message m = new Message();
 					m.what = MainActivity.DLG_DEVICE_NOT_FOUND;
-					mBluetoothConnected = false;
-					mBrainLinkDeviceFound = false;
+
 					bluetoothMessageHandler.sendMessage(m);
 					try 
 					{
@@ -458,7 +486,7 @@ public class MainActivity extends ListActivity
 
 	
 
-	private void initialFunctionDialog() 
+	private void initializeFunctionDialog() 
 	{
 		CharSequence[] items = { "Puppet Control", "Voice Control",
 				"Joystick Control", "Mimic Control", "Programmable Control" };
