@@ -65,7 +65,9 @@ public final class BrainLink implements BrainLinkInterface {
 	private static final byte IRPLAYSTORE_VALUE = 'G';
 	private static final byte IRPRINTSTORE_VALUE = 'g';
 	private static final byte RAW_VALUE = 's';
-
+	private static final byte AUXRECEIVE_VALUE = 'r';
+	private static final byte AUXTRANSMIT_VALUE = 't';
+	
 	private WakeupThread wakeupThread;
 
 	public BrainLink() {
@@ -257,15 +259,20 @@ public final class BrainLink implements BrainLinkInterface {
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean transmitBytesOverSerial(final byte[] bytesToSend) {
-
+		final byte[] command = new byte[bytesToSend.length+2];
+		command[0] = AUXTRANSMIT_VALUE;
+		command[1] = (byte)bytesToSend.length;
+		System.arraycopy(bytesToSend, 0, command, 2, bytesToSend.length);
+		writeCommand(10,16,command); 
 		return false;
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public int[] receiveBytesOverSerial() {
-		// TODO Auto-generated method stub
-		return null;
+		byte command = AUXRECEIVE_VALUE;
+		return returnIntegerArrayValue(command, 256);
+		
 	}
 
 	@Override
