@@ -69,7 +69,7 @@ public class JoystickView extends View implements Runnable {
 //		if(s.equals("walle")) {
 //			mRobot = (BrainLinkRobot)new WallE();
 //		}
-		if(s.equals("robosapien")) {
+		if(s.equals("Robosapien")) {
 			mRobot= (BrainLinkRobot)new RobotRobosapien();
 		}
 //		else if(s.equals("bossanova")) {

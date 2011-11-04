@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import edu.cmu.ri.createlab.brainlink.BrainLink;
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
-import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
 import edu.cmu.ri.createlab.util.ByteUtils;
 
 import android.app.Activity;
@@ -36,7 +34,7 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 
 	private boolean bStartButtonPressed =false;
 
-	private BrainLinkRobot mRobot;	
+	private BrainLink mRobot;
 	private Bundle bundle;
 	private String mRobotName;
 	int sx = 0;
@@ -49,19 +47,26 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 
 	byte[] b = new byte[]{};
 
-    
+    public static final int CONDITION_STOP = 0;
+    public static final int CONDITION_FORWARD = 1;
+    public static final int CONDITION_BACKWARD = 2;
+    public static final int CONDITION_LEFT = 3;
+    public static final int CONDITION_RIGHT = 4;
+    private int mRobotCondition;
+	
 
     /** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		//set full screen
-		initialWindow();
+		initializeWindow();
 		
-		initialRobot();
+		initializeRobot();
 		
-		initialSensor();
+		initializeSensor();
+
 		
 		start = (Button)findViewById(R.id.btn_startpuppet);
 		start.setOnTouchListener(new View.OnTouchListener() {
@@ -75,12 +80,15 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 					break;
 				case MotionEvent.ACTION_UP:
 					bStartButtonPressed = false;
-					mRobot.moveStop();
+					mRobot.transmitIRSignal("stop");
+					setRobotCondition(mRobotCondition);
 					start.setText("Start");
 					break;
 				}
 				return false;
 			}
+
+
 			
 		});
 		
@@ -96,9 +104,15 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 			}
 		});
 
+		
+		
 	}
 
-	private void initialSensor() {
+	private void setRobotCondition(int c) {
+		mRobotCondition = c;				
+	}
+	
+	private void initializeSensor() {
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		
 		setContentView(R.layout.act_puppet);
@@ -106,24 +120,18 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 		
 	}
 
-	private void initialRobot() {
+	private void initializeRobot() {
 		//get the data from MainActivity
 		bundle = getIntent().getExtras();
 
 		mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
+		
+		mRobot = MainActivity.mBrainLink;
+		mRobot.initializeDevice(mRobotName, true);
 
-//		if(mRobotName.equals("walle")) {
-//			mRobot = (BrainLinkRobot)new WallE();
-//		}
-		if(mRobotName.equals("robosapien")) {
-			mRobot= (BrainLinkRobot)new RobotRobosapien();
-		}
-//		else if(mRobotName.equals("bossanova")) {
-//			mRobot= (BrainLinkRobot)new BossaNova();
-//		}
 	}
 
-	private void initialWindow() {
+	private void initializeWindow() {
 
         //Set full Screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
@@ -139,16 +147,52 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 			}
 			
 			if(bStartButtonPressed==true && sensorEvent.values[1]>30) {
-				mRobot.moveForward();
+				if(mRobotCondition!=CONDITION_FORWARD) {
+					mRobot.transmitIRSignal("forward");
+					setRobotCondition(CONDITION_FORWARD);
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if(bStartButtonPressed == true && sensorEvent.values[1]<-30) {
-				mRobot.moveBackward();
+				if(mRobotCondition!=CONDITION_BACKWARD) {
+					mRobot.transmitIRSignal("backward");
+					setRobotCondition(CONDITION_BACKWARD);
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if(bStartButtonPressed == true && sensorEvent.values[2]> 30) {
-				mRobot.moveLeft();
+				if(mRobotCondition!=CONDITION_LEFT) {
+					mRobot.transmitIRSignal("left");
+					setRobotCondition(CONDITION_LEFT);
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}			
 			if(bStartButtonPressed == true && sensorEvent.values[2]<-30) {
-				mRobot.moveRight();
+				if(mRobotCondition!=CONDITION_RIGHT) {
+					mRobot.transmitIRSignal("right");
+					setRobotCondition(CONDITION_RIGHT);
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
