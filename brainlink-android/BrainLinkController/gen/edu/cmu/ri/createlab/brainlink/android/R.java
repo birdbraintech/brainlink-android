@@ -47,10 +47,11 @@ public final class R {
         public static final int right=0x7f020010;
         public static final int right_arrow=0x7f020011;
         public static final int splash_picture=0x7f020012;
-        public static final int top_back=0x7f020013;
-        public static final int touchpad_back=0x7f020014;
-        public static final int touchpad_foot=0x7f020015;
-        public static final int up=0x7f020016;
+        public static final int splash_picture_old=0x7f020013;
+        public static final int top_back=0x7f020014;
+        public static final int touchpad_back=0x7f020015;
+        public static final int touchpad_foot=0x7f020016;
+        public static final int up=0x7f020017;
     }
     public static final class id {
         public static final int GridView=0x7f07000c;
