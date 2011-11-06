@@ -3,6 +3,7 @@
 	package="edu.cmu.ri.createlab.brainlink.android" android:versionCode="1"
 	android:versionName="1.0">
 
+	<!-- the permission of using and setting bluetooth -->
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
 
