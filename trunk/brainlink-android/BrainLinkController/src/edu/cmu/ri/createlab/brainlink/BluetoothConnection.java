@@ -30,7 +30,98 @@ public class BluetoothConnection {
 																	// like
 																	// Brainlink
 
-	public boolean initialBluetoothAdapter() {
+	public static final int STATE_NO_BLUETOOTH = 0;
+	public static final int STATE_BLUETOOTH_OFF = 1;
+	public static final int STATE_BLUETOOTH_ON = 2;
+	public static final int STATE_BRAINLINK_CONNECTION_FAIL = 3;
+	public static final int STATE_BRAINLINK_CONNCCTION_SUCCESS = 4;
+
+	// this constructed function is designed as a quick connection function to
+	// setup a blutooth connection to the brainlink device
+	// if one hope to use this function, must make sure the brainlink device is
+	// turned on and already paired
+	public int BluetoothConnectionAuto(String name) {
+		boolean mBrainLinkDeviceFound = false;
+
+		// it is necessary to initialize the Bluetooth adapter, if the android
+		// device has a Bluetooth, return true, if not, return false
+		if (this.initializeBluetoothAdapter()) {
+			// after initialize the adapter, check the status. STATE_OFF means
+			// the bluetooth is not on
+			switch (this.getAdapterState()) {
+			case BluetoothAdapter.STATE_OFF:
+				// turn on the Bluetooth device
+				this.enableBluetoothAdapter();	
+				
+				for(int i=0; i<2; i++)
+				{
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (isEnabled())	// check if the bluetooth is turned on, if not, try again. no more than 2 times
+						break;
+				}
+				break;
+			case BluetoothAdapter.STATE_ON:
+				break;
+			}
+		} 
+		else 
+		{
+			return STATE_NO_BLUETOOTH; // no bluetooth device
+		}
+
+		if (!isEnabled())
+			return STATE_BLUETOOTH_OFF;
+
+		// find the paired brainlink device
+		if (!mBrainLinkDeviceFound) {
+			// find the paired devices first
+			mBrainLinkDeviceFound = this.findPairedBrainlinkDevice(name); // the
+																			// keyword
+																			// of
+																			// the
+																			// Bluetooth
+																			// component
+																			// of
+																			// a
+																			// brainlink
+																			// device
+
+			if (mBrainLinkDeviceFound) // if find one, then set up the
+										// connection
+			{
+				if (!this.socketConnect()) // if successfully connected the
+											// brainlink
+				{
+					mBrainLinkDeviceFound = false; // connection failed
+					return STATE_BRAINLINK_CONNECTION_FAIL;
+				} else {
+					return STATE_BRAINLINK_CONNCCTION_SUCCESS; // connected
+																// successfully
+				}
+			} 
+			else 
+			{
+				return STATE_BRAINLINK_CONNECTION_FAIL; // the brainlink device
+														// is not paired in the
+														// android phone
+			}
+		}
+		else
+		{
+			return STATE_BRAINLINK_CONNECTION_FAIL;
+		}
+	}
+
+	public BluetoothConnection() {
+
+	}
+
+	public boolean initializeBluetoothAdapter() {
 		mAdapter = BluetoothAdapter.getDefaultAdapter();
 
 		if (mAdapter == null)

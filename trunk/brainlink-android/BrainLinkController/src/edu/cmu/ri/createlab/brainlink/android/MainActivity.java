@@ -332,7 +332,7 @@ public class MainActivity extends ListActivity
 		mBluetooth = new BluetoothConnection();
 		
 		// Get local Bluetooth adapter
-		boolean bHasBluetooth = mBluetooth.initialBluetoothAdapter();
+		boolean bHasBluetooth = mBluetooth.initializeBluetoothAdapter();
 
 		// If the adapter is null, then Bluetooth is not supported
 		if (bHasBluetooth == false) 
@@ -348,16 +348,16 @@ public class MainActivity extends ListActivity
 		
 		initializeThreads();
 		
-		if (bHasBluetooth) 
+		if (bHasBluetooth) // if the android device has a bluetooth
 		{
-			if (!mBluetooth.isEnabled()) 
+			if (!mBluetooth.isEnabled()) // enable a bluetooth if not
 			{
 //				 Intent enableIntent = new
 //				 Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 //				 startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
 				bluetoothConnectThread.start();
 			} 
-			else 
+			else 	// connect to brainlink
 			{
 				mBluetoothConnected = true;	
 				brainLinkFindThread.start();
