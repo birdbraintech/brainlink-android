@@ -1,4 +1,4 @@
-package edu.cmu.ri.createlab.brainlink.android;
+package edu.cmu.ri.createlab.brainlink;
 
 
 /**
