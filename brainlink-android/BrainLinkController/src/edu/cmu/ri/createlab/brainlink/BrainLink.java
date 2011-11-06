@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import edu.cmu.ri.createlab.brainlink.android.BrainLinkInterface;
 import edu.cmu.ri.createlab.util.ByteUtils;
 import edu.cmu.ri.createlab.util.MathUtils;
 
