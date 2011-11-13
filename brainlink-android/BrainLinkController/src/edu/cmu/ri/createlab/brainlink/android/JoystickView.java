@@ -1,60 +1,70 @@
 package edu.cmu.ri.createlab.brainlink.android;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.BossaNova;
-import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
-//import edu.cmu.ri.createlab.brainlink.robots.robosapien.WallE;
-import edu.cmu.ri.createlab.util.ByteUtils;
 
-import android.bluetooth.BluetoothDevice;
+import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
+
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
+
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.os.Bundle;
+
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
 
 public class JoystickView extends View implements Runnable {
 
 	Bitmap mStickBackground;
 	Bitmap mDot;
+	Bitmap mDotPressed;
 
 	Paint mTextPaint = new Paint();
 	String mText = " ";
 
 	int mDotx, mDoty, mDotDiameter;
+	int mBgCoordx, mBgCoordy;
+	int vWidth, vHeight;
 	boolean mTouchCondition = false;
 
+	boolean mBackgroundPosition = false;
+	
 	private BrainLinkRobot mRobot;
 	
 	Bitmap mBackground;
 
+	
 	public JoystickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		Resources r = context.getResources();
 
 		mBackground = BitmapFactory.decodeResource(getResources(),
-				R.drawable.control_background);
+				R.drawable.control_bg);
 		mStickBackground = BitmapFactory.decodeStream(r
 				.openRawResource(R.drawable.joystick_back));
-		
+
 		mDot = BitmapFactory.decodeStream(r
 				.openRawResource(R.drawable.joystic_dot));
+		
+		mDotPressed = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot_2));
 
 		mDotDiameter = mDot.getWidth();
-		mDotx = 124;
-		mDoty = 160;
+		
+		vWidth = 0;
+		vHeight = 0;
+
+		
+		
+		mDotx = vWidth/2;
+		mDoty = vHeight/2;
 
 		mTextPaint.setARGB(255, 255, 255, 255);
 		mTextPaint.setStyle(Style.FILL);
@@ -80,8 +90,20 @@ public class JoystickView extends View implements Runnable {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		if(!mBackgroundPosition)
+		{
+			mBgCoordx = getWidth();
+			mBgCoordy = getHeight();
+			mBgCoordx = (vWidth - mStickBackground.getWidth()) / 2;
+			mBgCoordy = (vHeight - mStickBackground.getHeight()) / 2;	
+			mBackgroundPosition = true;
+			mDotx = mBgCoordx;
+			mDoty = mBgCoordy;
+		}
+
+		
 		canvas.drawBitmap(mBackground, 0, 0, null);
-		canvas.drawBitmap(mStickBackground, 0,0, null);
+		canvas.drawBitmap(mStickBackground, mBgCoordx,mBgCoordy, null);
 		canvas.drawBitmap(mDot, mDotx, mDoty, null);
 		canvas.drawText(mText, 10, 30, mTextPaint);
 	}

@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 	JoystickView joystickControl;
 	
 	TextView topView;
-	ImageView left, right;
+	Button btnLeft, btnRight;
 	int sx = 0;
 	
 	@Override
@@ -33,25 +34,15 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 
         bundle = getIntent().getExtras();
         mRobotName = (String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
-        
+
         initializeWindow();
-		
-		initializeView();
-		
-		
+        
+		initializeUI();
 
     }
     
 	
-	private void initializeWindow() {
-
-        //Set full Screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
-        		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-	}
-	
-    private void initializeView() {
+	private void initializeUI() {
         setContentView(R.layout.act_joystick);
         
         joystickControl = (JoystickView) findViewById(R.id.joystickview);
@@ -61,27 +52,38 @@ public class JoystickActivity extends Activity implements OnTouchListener{
         topView = (TextView) findViewById(R.id.topview);
         topView.setOnTouchListener(this);
         
-		left = (ImageView) findViewById(R.id.img_left);
-		right = (ImageView) findViewById(R.id.img_right);
 		
-		left.setOnClickListener(new OnClickListener() {
-
+        joystickControl.initialRobot(mRobotName);
+		
+		btnRight = (Button)findViewById(R.id.btn_right);
+		btnRight.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//shiftToRightAct();
+			}
+		});
+		
+		btnLeft = (Button)findViewById(R.id.btn_left);
+		btnLeft.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				shiftToLeftAct();
 			}
 		});
 		
-		right.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View v) {
-			//	shiftToRightAct();
-			}
-		});
-		
-        joystickControl.initialRobot(mRobotName);
-    }
+
+	private void initializeWindow() {
+
+        //Set full Screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+        		WindowManager.LayoutParams.FLAG_FULLSCREEN);  
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+
     
 	@Override
 	public boolean onTouch(View arg0, MotionEvent event) {

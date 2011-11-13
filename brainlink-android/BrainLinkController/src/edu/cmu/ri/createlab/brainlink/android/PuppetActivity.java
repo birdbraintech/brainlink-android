@@ -1,17 +1,11 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
+
 
 import edu.cmu.ri.createlab.brainlink.BrainLink;
-import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
-import edu.cmu.ri.createlab.util.ByteUtils;
+
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -23,11 +17,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class PuppetActivity extends Activity implements SensorEventListener, OnTouchListener {
@@ -40,10 +32,8 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 	int sx = 0;
 	private SensorManager sensorManager = null;
 	
-	Button start;
+	Button btnStart, btnRight;
 	TextView topView;
-	ImageView right;
-
 
 	byte[] b = new byte[]{};
 
@@ -67,43 +57,43 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 		
 		initializeSensor();
 
-		
-		start = (Button)findViewById(R.id.btn_startpuppet);
-		start.setOnTouchListener(new View.OnTouchListener() {
+		initializeUI();
+	
+	}
+
+	private void initializeUI() {
+		btnStart = (Button)findViewById(R.id.btn_startpuppet);
+		btnStart.setOnTouchListener(new View.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					bStartButtonPressed = true;
-					start.setText("Stop");
+					btnStart.setText("Stop");
 					break;
 				case MotionEvent.ACTION_UP:
 					bStartButtonPressed = false;
 					mRobot.transmitIRSignal("stop");
 					setRobotCondition(mRobotCondition);
-					start.setText("Start");
+					btnStart.setText("Start");
 					break;
 				}
 				return false;
-			}
-
-
-			
+			}		
 		});
 		
-		topView = (TextView) findViewById(R.id.topview);
-		topView.setOnTouchListener(this);
-		
-
-		right = (ImageView) findViewById(R.id.img_right);
-		right.setOnClickListener(new OnClickListener() {
+		btnRight = (Button)findViewById(R.id.btn_right);
+		btnRight.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				shiftToRightAct();
 			}
 		});
-
+		
+		topView = (TextView) findViewById(R.id.topview);
+		topView.setOnTouchListener(this);
 		
 		
 	}
