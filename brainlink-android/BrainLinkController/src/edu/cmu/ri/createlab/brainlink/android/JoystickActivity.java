@@ -1,8 +1,9 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
+
+import edu.cmu.ri.createlab.brainlink.BrainLink;
+import edu.cmu.ri.createlab.brainlink.BrainLinkConstants;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,15 +12,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
+
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
 public class JoystickActivity extends Activity implements OnTouchListener{
 
-	private BrainLinkRobot mRobot;	
 	private Bundle bundle;
 	private String mRobotName;
 	JoystickView joystickControl;
@@ -28,6 +28,8 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 	Button btnLeft, btnRight;
 	int sx = 0;
 	
+	private BrainLink mRobot;
+	private int mRobotCondition;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +40,61 @@ public class JoystickActivity extends Activity implements OnTouchListener{
         initializeWindow();
         
 		initializeUI();
+		
+		initializeRobot();
 
+
+		
     }
     
+	void left()
+	{
+		if(mRobotCondition!=BrainLinkConstants.CONDITION_LEFT) {
+			mRobot.transmitIRSignal("left");
+			setRobotCondition(BrainLinkConstants.CONDITION_LEFT);
+		}
+	}
+	
+	void right()
+	{
+		if(mRobotCondition!=BrainLinkConstants.CONDITION_RIGHT) {
+			mRobot.transmitIRSignal("right");
+			setRobotCondition(BrainLinkConstants.CONDITION_RIGHT);
+		}
+	}
+	
+	void stop()
+	{
+		mRobot.transmitIRSignal("stop");
+		setRobotCondition(BrainLinkConstants.CONDITION_STOP);
+	}
+	
+	void forward()
+	{
+		if(mRobotCondition!=BrainLinkConstants.CONDITION_FORWARD) {
+			mRobot.transmitIRSignal("forward");
+			setRobotCondition(BrainLinkConstants.CONDITION_FORWARD);
+		}
+	}
+	
+	void backward()
+	{
+		if(mRobotCondition!=BrainLinkConstants.CONDITION_BACKWARD) {
+			mRobot.transmitIRSignal("backward");
+			setRobotCondition(BrainLinkConstants.CONDITION_BACKWARD);
+		}
+	}
+	
+	private void setRobotCondition(int c) {
+		mRobotCondition = c;				
+	}
+	
+	private void initializeRobot() {
+		bundle = getIntent().getExtras();
+		mRobotName =(String) (bundle.getString(MainActivity.BUNDLE_ROBOT));
+		mRobot= MainActivity.mBrainLink;
+		mRobot.initializeDevice(mRobotName, true);
+	}
 	
 	private void initializeUI() {
         setContentView(R.layout.act_joystick);
@@ -51,9 +105,6 @@ public class JoystickActivity extends Activity implements OnTouchListener{
         
         topView = (TextView) findViewById(R.id.topview);
         topView.setOnTouchListener(this);
-        
-		
-        joystickControl.initialRobot(mRobotName);
 		
 		btnRight = (Button)findViewById(R.id.btn_right);
 		btnRight.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +156,10 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 		}
 		return true;
 	}
+	
+
+
+	
 	private void shiftToLeftAct() {
 //		Intent i;
 //		i = new Intent(getApplicationContext(), VoiceActivity.class);

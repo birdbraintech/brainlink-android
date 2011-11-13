@@ -3,7 +3,7 @@ package edu.cmu.ri.createlab.brainlink.android;
 
 
 import edu.cmu.ri.createlab.brainlink.BrainLink;
-
+import edu.cmu.ri.createlab.brainlink.BrainLinkConstants;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,14 +36,9 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 	TextView topView;
 
 	byte[] b = new byte[]{};
-
-    public static final int CONDITION_STOP = 0;
-    public static final int CONDITION_FORWARD = 1;
-    public static final int CONDITION_BACKWARD = 2;
-    public static final int CONDITION_LEFT = 3;
-    public static final int CONDITION_RIGHT = 4;
-    private int mRobotCondition;
 	
+	private int mRobotCondition;
+		
 
     /** Called when the activity is first created. */
 	@Override
@@ -75,7 +70,7 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 				case MotionEvent.ACTION_UP:
 					bStartButtonPressed = false;
 					mRobot.transmitIRSignal("stop");
-					setRobotCondition(mRobotCondition);
+					setRobotCondition(BrainLinkConstants.CONDITION_STOP);
 					btnStart.setText("Start");
 					break;
 				}
@@ -137,51 +132,27 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 			}
 			
 			if(bStartButtonPressed==true && sensorEvent.values[1]>30) {
-				if(mRobotCondition!=CONDITION_FORWARD) {
+				if(mRobotCondition!=BrainLinkConstants.CONDITION_FORWARD) {
 					mRobot.transmitIRSignal("forward");
-					setRobotCondition(CONDITION_FORWARD);
-				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					setRobotCondition(BrainLinkConstants.CONDITION_FORWARD);
 				}
 			}
 			if(bStartButtonPressed == true && sensorEvent.values[1]<-30) {
-				if(mRobotCondition!=CONDITION_BACKWARD) {
+				if(mRobotCondition!=BrainLinkConstants.CONDITION_BACKWARD) {
 					mRobot.transmitIRSignal("backward");
-					setRobotCondition(CONDITION_BACKWARD);
-				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					setRobotCondition(BrainLinkConstants.CONDITION_BACKWARD);
 				}
 			}
 			if(bStartButtonPressed == true && sensorEvent.values[2]> 30) {
-				if(mRobotCondition!=CONDITION_LEFT) {
+				if(mRobotCondition!=BrainLinkConstants.CONDITION_LEFT) {
 					mRobot.transmitIRSignal("left");
-					setRobotCondition(CONDITION_LEFT);
-				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					setRobotCondition(BrainLinkConstants.CONDITION_LEFT);
 				}
 			}			
 			if(bStartButtonPressed == true && sensorEvent.values[2]<-30) {
-				if(mRobotCondition!=CONDITION_RIGHT) {
+				if(mRobotCondition!=BrainLinkConstants.CONDITION_RIGHT) {
 					mRobot.transmitIRSignal("right");
-					setRobotCondition(CONDITION_RIGHT);
-				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					setRobotCondition(BrainLinkConstants.CONDITION_RIGHT);
 				}
 			}
 		}

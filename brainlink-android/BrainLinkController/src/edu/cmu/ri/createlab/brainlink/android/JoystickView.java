@@ -1,5 +1,6 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
+import edu.cmu.ri.createlab.brainlink.BrainLink;
 import edu.cmu.ri.createlab.brainlink.robots.BrainLinkRobot;
 
 import edu.cmu.ri.createlab.brainlink.robots.robosapien.RobotRobosapien;
@@ -10,6 +11,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.Region;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -24,10 +27,8 @@ public class JoystickView extends View implements Runnable {
 
 	Bitmap mStickBackground;
 	Bitmap mDot;
-	Bitmap mDotPressed;
 
 	Paint mTextPaint = new Paint();
-	String mText = " ";
 
 	int mDotx, mDoty, mDotDiameter;
 	int mBgCoordx, mBgCoordy;
@@ -36,31 +37,31 @@ public class JoystickView extends View implements Runnable {
 
 	boolean mBackgroundPosition = false;
 	
-	private BrainLinkRobot mRobot;
+	
 	
 	Bitmap mBackground;
+	
+	Rect mLeft, mRight, mTop, mBottom, mCenter;
 
+	Context joystickActivity;
+	Resources r;
+	private String mRobotName;
 	
 	public JoystickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		Resources r = context.getResources();
+		joystickActivity = (JoystickActivity)context;
+		r = context.getResources();
 
 		mBackground = BitmapFactory.decodeResource(getResources(),
 				R.drawable.control_bg);
 		mStickBackground = BitmapFactory.decodeStream(r
 				.openRawResource(R.drawable.joystick_back));
 
-		mDot = BitmapFactory.decodeStream(r
-				.openRawResource(R.drawable.joystic_dot));
-		
-		mDotPressed = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot_2));
+		mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot));
 
 		mDotDiameter = mDot.getWidth();
 		
-		vWidth = 0;
-		vHeight = 0;
-
 		
 		
 		mDotx = vWidth/2;
@@ -75,37 +76,33 @@ public class JoystickView extends View implements Runnable {
 		
 	}
 
-	public void initialRobot(String s) {
-//		if(s.equals("walle")) {
-//			mRobot = (BrainLinkRobot)new WallE();
-//		}
-		if(s.equals("Robosapien")) {
-			mRobot= (BrainLinkRobot)new RobotRobosapien();
-		}
-//		else if(s.equals("bossanova")) {
-//			mRobot= (BrainLinkRobot)new BossaNova();
-//		}
-//		
-	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if(!mBackgroundPosition)
 		{
-			mBgCoordx = getWidth();
-			mBgCoordy = getHeight();
+			vWidth = getWidth();
+			vHeight = getHeight();
 			mBgCoordx = (vWidth - mStickBackground.getWidth()) / 2;
-			mBgCoordy = (vHeight - mStickBackground.getHeight()) / 2;	
+			mBgCoordy = (int) ((vHeight - mStickBackground.getHeight()) / 2 + vHeight*.1);	
 			mBackgroundPosition = true;
-			mDotx = mBgCoordx;
-			mDoty = mBgCoordy;
+			mDotx = (vWidth - mDot.getWidth()) / 2;
+			mDoty = (int) ((vHeight - mDot.getHeight()) / 2 + vHeight*.1);	
+			
+			int stickBackWidth = mStickBackground.getWidth();
+			int stickBackHeight = mStickBackground.getHeight();
+			mLeft = new Rect(mBgCoordx,mBgCoordy+(int)(0.362*stickBackHeight),mBgCoordx+(int)(0.357*stickBackWidth),mBgCoordy+(int)(0.652*stickBackHeight));
+			mRight = new Rect(mBgCoordx+(int)(0.643*stickBackWidth),mBgCoordy+(int)(0.362*stickBackHeight),mBgCoordx+stickBackWidth,mBgCoordy+(int)(0.652*stickBackHeight));
+			mTop = new Rect(mBgCoordx+(int)(0.357*stickBackWidth), mBgCoordy, mBgCoordx+(int)(0.643*stickBackWidth),mBgCoordy+(int)(0.362*stickBackHeight));
+			mBottom = new Rect(mBgCoordx+(int)(0.357*stickBackWidth),mBgCoordy+(int)(0.652*stickBackHeight), mBgCoordx+(int)(0.643*stickBackWidth),mBgCoordy+ stickBackHeight);
+			mCenter = new Rect(mBgCoordx+(int)(0.357*stickBackWidth), mBgCoordy+(int)(0.362*stickBackHeight),mBgCoordx+(int)(0.643*stickBackWidth),mBgCoordy+(int)(0.652*stickBackHeight));
+
 		}
 
 		
 		canvas.drawBitmap(mBackground, 0, 0, null);
 		canvas.drawBitmap(mStickBackground, mBgCoordx,mBgCoordy, null);
 		canvas.drawBitmap(mDot, mDotx, mDoty, null);
-		canvas.drawText(mText, 10, 30, mTextPaint);
 	}
 
 	@Override
@@ -119,49 +116,69 @@ public class JoystickView extends View implements Runnable {
 			if (tx >= mDotx && tx <= mDotx + mDotDiameter && ty >= mDoty
 					&& ty <= mDoty + mDotDiameter) {
 				mTouchCondition = true;
+				mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot_2));
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if (mTouchCondition) {
-				if (ty > 53 && ty <320 && mDotx > 114 && mDotx<134) {
-					mDoty = ty - mDotDiameter / 2;
-					mDotx = 124;
-					if (mDoty < 53) {
-						mDoty = 53;
-						mRobot.moveForward();
-					}
-					if (mDoty > 270) {
-						mDoty = 270;
-						mRobot.moveBackward();
-					}
 
-				}
-				if (tx > 16 && tx < 300 && mDoty > 150 && mDoty<170) {
+				if(mCenter.contains(tx, ty)) {
 					mDotx = tx - mDotDiameter / 2;
-					mDoty = 160;
-					if (mDotx < 16) {
-						mDotx = 16;
-						mRobot.moveLeft();
-					}
-					if (mDotx > 230) {
-						mDotx = 230;
-						mRobot.moveRight();
-					}
+					mDoty = ty - mDotDiameter / 2;					
 				}
-
+				if(mTop.contains(tx, ty)) {
+					if(ty-mDotDiameter/2<mTop.top) {
+						mDotx = tx - mDotDiameter / 2;
+					}
+					else {
+						mDotx = tx - mDotDiameter / 2;
+						mDoty = ty - mDotDiameter / 2;
+					}
+					((JoystickActivity) joystickActivity).forward();
+				}
+				if(mBottom.contains(tx,ty)) {
+					if(ty+mDotDiameter/2>mBottom.bottom) {
+						mDotx = tx - mDotDiameter /2;
+					}
+					else {
+						mDotx = tx - mDotDiameter / 2;
+						mDoty = ty - mDotDiameter / 2;
+					}
+					((JoystickActivity) joystickActivity).backward();
+				}
+				if(mLeft.contains(tx, ty)) {
+					if(tx-mDotDiameter/2<mLeft.left) {
+						mDoty = ty - mDotDiameter / 2;
+					}
+					else {
+						mDoty = ty - mDotDiameter / 2;
+						mDotx = tx - mDotDiameter / 2;
+					}
+					((JoystickActivity) joystickActivity).left();
+				}
+				if(mRight.contains(tx, ty)) {
+					if(tx+mDotDiameter/2>mRight.right) {
+						mDoty = ty - mDotDiameter /2;
+					}
+					else {
+						mDotx = tx - mDotDiameter / 2;
+						mDoty = ty - mDotDiameter / 2;
+					}
+					((JoystickActivity) joystickActivity).right();
+				}
+				
+				
 
 			}
 			break;
 		case MotionEvent.ACTION_UP:
 			mTouchCondition = false;
-			mDotx = 124;
-			mDoty = 160;
-			mText = " ";
-			mRobot.moveStop();
+			mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot));
+			mDotx = (vWidth - mDot.getWidth()) / 2;
+			mDoty = (int) ((vHeight - mDot.getHeight()) / 2 + vHeight*.1);	
+			((JoystickActivity) joystickActivity).stop();
 			break;
 		}
-//		mText = "X:" + Integer.toString(mDotx) + " Y:"
-//				+ Integer.toString(mDoty);
 
 		return true;
 	}

@@ -1,6 +1,7 @@
 package edu.cmu.ri.createlab.brainlink.android;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import edu.cmu.ri.createlab.brainlink.BluetoothConnection;
 import edu.cmu.ri.createlab.brainlink.BrainLink;
+import edu.cmu.ri.createlab.brainlink.BrainLinkFileManipulator;
 
 
 import android.app.AlertDialog;
@@ -31,6 +33,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class MainActivity extends ListActivity 
 {
@@ -155,9 +159,9 @@ public class MainActivity extends ListActivity
 
 	private void initializeList() 
 	{
-		SimpleAdapter adapter = new SimpleAdapter(this, getData(),
-				R.layout.list_robot, new String[] { "title", "info", "img" },
-				new int[] { R.id.title, R.id.info, R.id.img });
+		RobotAdapter adapter = new RobotAdapter(this, getData(),
+				R.layout.list_robot, new String[] { "title", "img"},
+				new int[] { R.id.title, R.id.img});
 		setListAdapter(adapter);
 
 	}
@@ -267,34 +271,43 @@ public class MainActivity extends ListActivity
 	
 	private List<Map<String, Object>> getData() 
 	{
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", "walle");
-		map.put("info", "WALL-E U Command");
-		map.put("img", R.drawable.i1);
-		mRobotList.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("title", "Robosapien");
-		map.put("info", "WowWee");
-		map.put("img", R.drawable.i2);
-		mRobotList.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("title", "bossanova");
-		map.put("info", "Bossa Nova Prime-8");
-		map.put("img", R.drawable.i3);
-		mRobotList.add(map);
+		String fileDirectory = "/sdcard/BirdBrainTechnologies/BrainLink/devices/";
+		File path = new File(fileDirectory);
+		String[] list = path.list();
+		String[] name = new String[list.length];
+		for(int i=0, j=0; i<list.length; i++) {
+			String[] temp = list[i].split("\\.");
+			if(temp!=null && temp.length>=1 && temp[1].equals("encsig")) {
+				name[j] = temp[0];
+				j++;
+			}
+		}
+		
+		Map<String, Object> map;
+		int i=0;
+		while(name[i]!=null) {
+			map = new HashMap<String, Object>();
+			map.put("title", name[i]);
+			File temp = new File(fileDirectory + name[i] + ".png");
+			if(temp.exists()) {
+				Bitmap bmp=BitmapFactory.decodeFile(fileDirectory+name[i] + ".png");
+				map.put("img", bmp);
+			}
+			else
+				map.put("img",R.drawable.unknown);
+			mRobotList.add(map);
+			i++;
+		}
 
 		return mRobotList;
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		getMenuInflater().inflate(R.layout.menu_main, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) 
+//	{
+//		getMenuInflater().inflate(R.layout.menu_main, menu);
+//		return true;
+//	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) 
@@ -366,16 +379,16 @@ public class MainActivity extends ListActivity
 
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
-	{
-		switch (item.getItemId()) 
-		{
-			case R.id.addnewrobots:
-				return true;
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) 
+//	{
+//		switch (item.getItemId()) 
+//		{
+//			case R.id.addnewrobots:
+//				return true;
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
