@@ -5,29 +5,40 @@
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
-		<TextView android:layout_width="wrap_content" android:id="@+id/topview"
-			android:layout_height="wrap_content" android:text="Joystick"
-			android:textSize="12pt" android:textColor="#FFFFFF"
-			android:background="@drawable/top_back"
-			android:layout_alignParentTop="true">
-		</TextView>
+	<TextView android:id="@+id/topview"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:text="Joystick"
+		android:textSize="35dip" 
+		android:textColor="#FFFFFF"
+		android:typeface="sans"
+		android:gravity="center_vertical"
+		android:background="@drawable/top_bg" 
+		android:layout_alignParentTop="true">
+	</TextView>
 
-		<ImageView android:id="@+id/img_left"
-			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_alignParentRight="true"
-			android:layout_marginRight="50px" android:layout_marginBottom="10px"
-			android:src="@drawable/left_arrow" />
-
-		<ImageView android:id="@+id/img_right"
-			android:layout_alignBottom="@id/topview" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_alignParentRight="true"
-			android:layout_marginRight="10px" android:layout_marginBottom="10px"
-			android:src="@drawable/right_arrow" />
-
-		<edu.cmu.ri.createlab.brainlink.android.JoystickView
-			android:id="@+id/joystickview" android:layout_width="fill_parent"
-			android:layout_height="435px" android:layout_alignParentBottom="true">
-		</edu.cmu.ri.createlab.brainlink.android.JoystickView>
+	<Button android:id="@+id/btn_right" 
+	  android:layout_width="wrap_content" 
+	  android:layout_height="wrap_content" 
+	  android:background="@drawable/right_arrow_btn"
+	  android:layout_alignParentRight="true" 
+	  android:layout_marginTop="10dip"
+	  android:layout_marginRight="5dip"/>
+	  
+	<Button android:id="@+id/btn_left" 
+	  android:layout_width="wrap_content" 
+	  android:layout_height="wrap_content" 
+	  android:background="@drawable/left_arrow_btn"
+	  android:layout_toLeftOf="@id/btn_right"
+	  android:layout_marginTop="10dip"
+	  android:layout_marginRight="5dip"/>
+	  
+	<edu.cmu.ri.createlab.brainlink.android.JoystickView 
+	android:id="@+id/joystickview" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:layout_below="@+id/topview">
+	</edu.cmu.ri.createlab.brainlink.android.JoystickView>
 
 
 	</RelativeLayout>
