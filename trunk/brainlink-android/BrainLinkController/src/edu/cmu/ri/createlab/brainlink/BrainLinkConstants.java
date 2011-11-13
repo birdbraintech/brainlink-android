@@ -26,6 +26,12 @@ public final class BrainLinkConstants
    /** The number of accelerometer axes. */
    public static final int ACCELEROMETER_AXIS_COUNT = 3;
 
+   public static final int CONDITION_STOP = 0;
+   public static final int CONDITION_FORWARD = 1;
+   public static final int CONDITION_BACKWARD = 2;
+   public static final int CONDITION_LEFT = 3;
+   public static final int CONDITION_RIGHT = 4;
+
    private BrainLinkConstants()
       {
       // private to prevent instantiation
