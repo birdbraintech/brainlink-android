@@ -186,11 +186,11 @@ public class PuppetActivity extends Activity implements SensorEventListener, OnT
 
 	
 	private void shiftToRightAct() {
-//		Intent i;
-//		i = new Intent(getApplicationContext(), VoiceActivity.class);
-//		i.putExtras(bundle);
-//		startActivity(i);
-//		finish();			
+		Intent i;
+		i = new Intent(getApplicationContext(), JoystickActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		finish();			
 	}
 
 	@Override
