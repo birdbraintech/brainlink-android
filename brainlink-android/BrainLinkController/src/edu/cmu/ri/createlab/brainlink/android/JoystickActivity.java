@@ -22,7 +22,7 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 
 	private Bundle bundle;
 	private String mRobotName;
-	JoystickView joystickControl;
+	JoystickView joystickView;
 	
 	TextView topView;
 	Button btnLeft, btnRight;
@@ -99,21 +99,13 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 	private void initializeUI() {
         setContentView(R.layout.act_joystick);
         
-        joystickControl = (JoystickView) findViewById(R.id.joystickview);
+        joystickView = (JoystickView) findViewById(R.id.joystickview);
         //joyStickControl.setOnTouchListener(this);
-        joystickControl.setFocusableInTouchMode(true);     
+        joystickView.setFocusableInTouchMode(true);     
         
         topView = (TextView) findViewById(R.id.topview);
         topView.setOnTouchListener(this);
 		
-		btnRight = (Button)findViewById(R.id.btn_right);
-		btnRight.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				//shiftToRightAct();
-			}
-		});
 		
 		btnLeft = (Button)findViewById(R.id.btn_left);
 		btnLeft.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +115,15 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 				shiftToLeftAct();
 			}
 		});
+		
+//		btnRight = (Button)findViewById(R.id.btn_right);
+//		btnRight.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				shiftToRightAct();
+//			}
+//		});
 		
 	}
 
@@ -149,7 +150,7 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 				if (event.getX() - sx > 0) {
 					shiftToLeftAct();
 				} else {
-				//	shiftToRightAct();
+					shiftToRightAct();
 				}
 				break;
 			}
@@ -161,19 +162,19 @@ public class JoystickActivity extends Activity implements OnTouchListener{
 
 	
 	private void shiftToLeftAct() {
-//		Intent i;
-//		i = new Intent(getApplicationContext(), VoiceActivity.class);
-//		i.putExtras(bundle);
-//		startActivity(i);
-//		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-//		finish();
+		Intent i;
+		i = new Intent(getApplicationContext(), PuppetActivity.class);
+		i.putExtras(bundle);
+		startActivity(i);
+		overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+		finish();
 	}
 	
-//	private void shiftToRightAct() {
+	private void shiftToRightAct() {
 //		Intent i;
 //		i = new Intent(getApplicationContext(), NativeActivity.class);
 //		i.putExtras(bundle);
 //		startActivity(i);
 //		finish();			
-//	}
+	}
 }

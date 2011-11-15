@@ -332,7 +332,7 @@ public class MainActivity extends ListActivity
 		} 
 		else if (!mBrainLinkDeviceFound) 
 		{
-			brainLinkFindThread.start(); // find Brainlink Device
+			mBluetoothDialog.cancel();
 		}
 
 	}
@@ -501,8 +501,10 @@ public class MainActivity extends ListActivity
 
 	private void initializeFunctionDialog() 
 	{
-		CharSequence[] items = { "Puppet Control", "Voice Control",
-				"Joystick Control", "Mimic Control", "Programmable Control" };
+//		CharSequence[] items = { "Puppet Control", "Voice Control",
+//				"Joystick Control", "Mimic Control", "Programmable Control" };
+		CharSequence[] items = { "Puppet Control",
+				"Joystick Control"};
 		AlertDialog.Builder mybuilder;
 		mybuilder = new AlertDialog.Builder(this);
 		mybuilder.setTitle("Choose One");
@@ -541,7 +543,7 @@ public class MainActivity extends ListActivity
 //
 //				startActivity(i);
 //				break;
-			case 2:
+			case 1:
 				// Start VoiceActivity
 				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
 
@@ -552,7 +554,7 @@ public class MainActivity extends ListActivity
 				break;
 
 //			case 3:
-//				// Start VoiceActivity
+//				// Start MimicActivity
 //				bundle.putString(BUNDLE_ROBOT, mSelectedRobot);
 //
 //				i = new Intent(MainActivity.this, MimicActivity.class);

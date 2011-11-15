@@ -45,7 +45,6 @@ public class JoystickView extends View implements Runnable {
 
 	Context joystickActivity;
 	Resources r;
-	private String mRobotName;
 	
 	public JoystickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -55,21 +54,11 @@ public class JoystickView extends View implements Runnable {
 
 		mBackground = BitmapFactory.decodeResource(getResources(),
 				R.drawable.control_bg);
-		mStickBackground = BitmapFactory.decodeStream(r
-				.openRawResource(R.drawable.joystick_back));
+		mStickBackground = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystick_back));
 
-		mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot));
+		mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.touchdot));
 
 		mDotDiameter = mDot.getWidth();
-		
-		
-		
-		mDotx = vWidth/2;
-		mDoty = vHeight/2;
-
-		mTextPaint.setARGB(255, 255, 255, 255);
-		mTextPaint.setStyle(Style.FILL);
-		mTextPaint.setTextSize(30);
 
 		Thread thread = new Thread(this);
 		thread.start();
@@ -116,7 +105,7 @@ public class JoystickView extends View implements Runnable {
 			if (tx >= mDotx && tx <= mDotx + mDotDiameter && ty >= mDoty
 					&& ty <= mDoty + mDotDiameter) {
 				mTouchCondition = true;
-				mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot_2));
+				mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.touchdot_2));
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -173,7 +162,7 @@ public class JoystickView extends View implements Runnable {
 			break;
 		case MotionEvent.ACTION_UP:
 			mTouchCondition = false;
-			mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.joystic_dot));
+			mDot = BitmapFactory.decodeStream(r.openRawResource(R.drawable.touchdot));
 			mDotx = (vWidth - mDot.getWidth()) / 2;
 			mDoty = (int) ((vHeight - mDot.getHeight()) / 2 + vHeight*.1);	
 			((JoystickActivity) joystickActivity).stop();
@@ -181,14 +170,6 @@ public class JoystickView extends View implements Runnable {
 		}
 
 		return true;
-	}
-
-
-	private int touchZone(int tx, int ty) {
-		if (tx > 50 && tx < 120 && ty > 70 && ty < 160)
-			return 0;
-
-		return 0;
 	}
 
 	
