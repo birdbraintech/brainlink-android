@@ -273,7 +273,7 @@ public final class BrainLink implements BrainLinkInterface {
 	@Override
 	public int[] receiveBytesOverSerial() {
 		byte command = AUXRECEIVE_VALUE;
-		return returnIntegerArrayValue(command, 256);
+		return returnVariableLengthIntegerArrayValue(command);
 		
 	}
 
@@ -350,8 +350,16 @@ public final class BrainLink implements BrainLinkInterface {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public int[] recordIR() {
-		// TODO Auto-generated method stub
-		return null;
+		int[] rawValues = returnVariableLengthIntegerArrayValue(IRRECORD_VALUE, 6);
+		if(rawValues == null) {
+			return null;
+		}
+		int[] returnValues = new int[rawValues.length/2];
+		for(int i = 0; i < rawValues.length/2; i++) {
+			returnValues[i] = (rawValues[i*2]*256 + rawValues[i*2+1])*2;
+		}
+		return returnValues;
+		
 	}
 
 	@Override
@@ -578,6 +586,10 @@ public final class BrainLink implements BrainLinkInterface {
 				final byte[] buff = new byte[returnCount + 1];
 				int[] returnValue = new int[returnCount];
 				inStream.read(buff);
+				// Check that the buffer length is as long as we think it is. If not
+				if(buff.length < returnCount) {
+					
+				}
 				for (int i = 0; i < returnCount; i++) {
 					returnValue[i] = ByteUtils.unsignedByteToInt(buff[i + 1]);
 				}
@@ -591,6 +603,78 @@ public final class BrainLink implements BrainLinkInterface {
 		return null;
 	}
 
+	int[] returnVariableLengthIntegerArrayValue(byte b) {
+
+		readTempBuffer();
+		sendCommand(b);
+
+		try {
+			int count = inStream.available();
+
+			if (count != 0) {
+				final byte[] buff = new byte[257];
+				inStream.read(buff);
+				// If we get an error, break out of the loop immediately
+				if(buff[1] == 'E' && buff[2] == 'R' && buff[3] == 'R') 
+				{
+					return null;
+				}
+				// buff[1] holds the length of the returned data
+				int[] returnValue = new int[buff[1]];
+				for (int i = 0; i < buff[1]; i++) {
+					returnValue[i] = ByteUtils.unsignedByteToInt(buff[i + 2]);
+				}
+				return returnValue;
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	int[] returnVariableLengthIntegerArrayValue(byte b, int delay) {
+
+		readTempBuffer();
+		sendCommand(b);
+
+		try {
+			int delayCounter = 0;
+			int count = 0;
+			do
+			{
+				count = inStream.available();
+				
+				delayCounter++;
+				// wait 100 ms to check again
+				sleep(100);
+			} while(count <=1 && delayCounter < delay*10);
+
+			if (count != 0) {
+				final byte[] buff = new byte[257];
+				inStream.read(buff);
+				// If we get an error, break out of the loop immediately
+				if(buff[1] == 'E' && buff[2] == 'R' && buff[3] == 'R') 
+				{
+					return null;
+				}
+				// buff[1] holds the length of the returned data
+				int[] returnValue = new int[buff[1]];
+				for (int i = 0; i < buff[1]; i++) {
+					returnValue[i] = ByteUtils.unsignedByteToInt(buff[i + 2]);
+				}
+				return returnValue;
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}	
+
+	
 	Integer returnIntegerValue(byte b) {
 
 		readTempBuffer();

@@ -18,7 +18,7 @@ public final class BrainLinkConstants
    public static final int TONE_MAX_FREQUENCY = 31250;
 
    /** The number of photoresistors. */
-   public static final int PHOTORESISTOR_DEVICE_COUNT = 2;
+   public static final int PHOTORESISTOR_DEVICE_COUNT = 1;
 
    /** The number of analog inputs. */
    public static final int ANALOG_INPUT_COUNT = 6;
