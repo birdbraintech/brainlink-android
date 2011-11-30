@@ -34,7 +34,7 @@ public class BluetoothConnection {
 	public static final int STATE_BLUETOOTH_OFF = 1;
 	public static final int STATE_BLUETOOTH_ON = 2;
 	public static final int STATE_BRAINLINK_CONNECTION_FAIL = 3;
-	public static final int STATE_BRAINLINK_CONNCCTION_SUCCESS = 4;
+	public static final int STATE_BRAINLINK_CONNECTION_SUCCESS = 4;
 
 	// this constructed function is designed as a quick connection function to
 	// setup a blutooth connection to the brainlink device
@@ -100,7 +100,7 @@ public class BluetoothConnection {
 					mBrainLinkDeviceFound = false; // connection failed
 					return STATE_BRAINLINK_CONNECTION_FAIL;
 				} else {
-					return STATE_BRAINLINK_CONNCCTION_SUCCESS; // connected
+					return STATE_BRAINLINK_CONNECTION_SUCCESS; // connected
 																// successfully
 				}
 			} 
@@ -258,7 +258,7 @@ public class BluetoothConnection {
 		return mAdapter.startDiscovery();
 	}
 
-	public void cencelSocket() {
+	public void cancelSocket() {
 		try {
 			mSocket.close();
 		} catch (IOException e) {
