@@ -11,6 +11,9 @@ import edu.cmu.ri.createlab.util.MathUtils;
 /**
  * @author Chris Bartley (bartley@cmu.edu)
  * @author Modified by Huaishu Peng
+ * A few functions haven't been implemented or need double check:
+ * not implemented: recordIR
+ * need to check: setPWM; setDAC; transmitBytesOverSerial; sendRawIR; 
  */
 public final class BrainLink implements BrainLinkInterface {
 
