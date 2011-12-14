@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Class for reading and writing brainlink device files.
  * @author Tom Lauwers (tlauwers@birdbraintechnologies.com)
- * @author Modyfied by Huaishu Peng
+ * @author Modified by Huaishu Peng
  */
 public class BrainLinkFileManipulator {
 
