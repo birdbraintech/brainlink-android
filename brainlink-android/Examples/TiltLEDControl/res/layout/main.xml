@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
+    <Button android:text="@string/Start" android:layout_width="162dp" android:id="@+id/btnStart" android:layout_height="wrap_content" android:layout_x="82dp" android:layout_y="219dp"></Button>
+    <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_x="34dp" android:layout_y="50dp" android:layout_width="243dp" android:id="@+id/statusText" android:layout_height="128dp" android:text="@string/nothing"></TextView>
+    <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_x="35dp" android:layout_y="292dp" android:layout_width="244dp" android:layout_height="174dp" android:text="@string/nothing" android:id="@+id/colorField"></TextView>
+</AbsoluteLayout>

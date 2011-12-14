@@ -1,0 +1,12 @@
+Initialization;3;48;1;13;5;2;12;6;-126;1;-96;1;-96
+stop;96;0;0;0
+forward;96;16;0;0
+backward;96;32;0;0
+left;96;48;0;0
+right;96;64;0;0
+forwardAndLeft;96;80;0;0
+forwardAndRight;96;96;0;0
+backwardAndRight;96;-128;0;0
+backwardAndLeft;96;112;0;0
+rotateClockwise;96;-112;0;0
+rotateCounterClockwise;96;-96;0;0

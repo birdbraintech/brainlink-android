@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation = "vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <ImageView
+  	android:id="@+id/imgTitle"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:src = "@drawable/top_back"
+  	/>
+  <ImageView
+  	android:id="@+id/imgBackground"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:src = "@drawable/background"
+  	android:layout_below="@id/imgTitle"
+  	/>
+  <TextView
+  	android:id="@+id/txtTitle"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:textSize="24sp"
+  	android:layout_alignLeft="@id/imgTitle"
+  	android:text="CONTROL PANEL"
+  	/>
+  <TextView 
+  	android:id="@+id/display"
+  	android:layout_width="fill_parent"
+  	android:layout_height="120sp"
+  	android:layout_below="@id/imgTitle"
+  	android:textColor="#1E7311"
+  	android:textSize="35sp"
+  	android:text = "RESULT"
+  />
+  <TextView 
+  	android:id="@+id/line_0"
+  	android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#FFFFFF"
+    android:focusable="false"
+    android:layout_below = "@id/display"
+    />
+    <Button android:layout_height="wrap_content" android:id="@+id/btn_accelerometersensor" android:text="AccelerometerSensor" android:layout_width="wrap_content" android:layout_below="@+id/display" android:layout_toRightOf="@+id/btn_lightsensor"></Button>
+    <Button android:layout_height="wrap_content" android:id="@+id/btn_analog" android:text="Analog" android:layout_width="wrap_content" android:layout_above="@+id/btn_battery" android:layout_alignParentRight="true"></Button>
+    <Button android:layout_height="wrap_content" android:id="@+id/btn_lightsensor" android:text="LightSensor" android:layout_width="wrap_content" android:layout_below="@+id/line_0" android:layout_alignParentLeft="true"></Button>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_below="@+id/line_1" android:layout_alignRight="@+id/btn_accelerometersensor" android:layout_marginTop="23dp">
+        <LinearLayout android:id="@+id/led" android:layout_width="160px" android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:text="LED:Red" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txt_ledr"></TextView>
+            <SeekBar android:id="@+id/ledr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progress="0" android:max="255"></SeekBar>
+            <TextView android:text="LED:Green" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txt_ledg"></TextView>
+            <SeekBar android:id="@+id/ledg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progress="0" android:max="255"></SeekBar>
+            <TextView android:text="LED:Blue" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txt_ledb"></TextView>
+            <SeekBar android:id="@+id/ledb" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progress="0" android:max="255"></SeekBar>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/sound" android:layout_width="160px" android:layout_height="wrap_content" android:orientation="vertical" android:weightSum="1">
+            <TextView android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txt_ledr" android:text="@string/speakerTone"></TextView>
+            <SeekBar android:id="@+id/soundbar" android:layout_marginTop="20px" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progress="0" android:layout_marginLeft="10px" android:max="255"></SeekBar>
+        </LinearLayout>
+    </LinearLayout>
+    <ToggleButton android:id="@+id/sound_tgl" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="ToggleButton" android:layout_alignTop="@+id/linearLayout1" android:layout_alignLeft="@+id/btn_analog"></ToggleButton>
+    <Button android:layout_height="wrap_content" android:text="Battery" android:layout_width="wrap_content" android:layout_below="@+id/btn_lightsensor" android:layout_alignRight="@+id/btn_lightsensor" android:layout_alignParentLeft="true" android:id="@+id/btn_battery"></Button>
+    <TextView android:layout_height="1dp" android:background="#FFFFFF" android:focusable="false" android:layout_width="fill_parent" android:id="@+id/line_1" android:layout_below="@+id/btn_battery" android:layout_alignParentLeft="true"></TextView>
+
+</RelativeLayout>

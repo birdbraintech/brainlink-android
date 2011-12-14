@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, BrainlinkSimpleAndroidSetupActivity!</string>
+    <string name="app_name">Signal Capturer</string>
+    <string name="signal1">Signal 1</string>
+    <string name="signal2">Signal 2</string>
+    <string name="signal3">Signal 3</string>
+    <string name="signal4">Signal 4</string>
+    <string name="signal5">Signal 5</string>
+    <string name="zeroms">0 ms</string>
+    <string name="norepeat">No repeat</string>
+    <string name="capture">Capture</string>
+    <string name="store">Store</string>
+    <string name="one">1</string>
+    <string name="none">  </string>
+    <string name="rightMove">></string>
+    <string name="captureStore">Capture and Store</string>
+    <string name="send">Send Signals</string>
+</resources>

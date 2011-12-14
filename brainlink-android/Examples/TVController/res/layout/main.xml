@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent">
+        <Button android:id="@+id/power_button" android:layout_height="wrap_content" android:padding="10dp" android:layout_width="wrap_content" android:background="@drawable/power_button" android:layout_below="@+id/volume_up_button" android:layout_centerHorizontal="true"></Button>
+        <Button android:layout_height="wrap_content" android:padding="10dp" android:layout_width="wrap_content" android:background="@drawable/down_button" android:layout_below="@+id/power_button" android:layout_alignLeft="@+id/volume_up_button" android:id="@+id/volume_down_button"></Button>
+        <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:text="@string/volume" android:layout_above="@+id/channel_up_button" android:layout_toLeftOf="@+id/power_button" android:layout_marginRight="27dp" android:layout_marginBottom="24dp"></TextView>
+        <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:text="@string/channel" android:layout_alignBaseline="@+id/textView1" android:layout_alignBottom="@+id/textView1" android:layout_toRightOf="@+id/power_button" android:layout_marginLeft="27dp"></TextView>
+        <Button android:id="@+id/volume_up_button" android:layout_height="wrap_content" android:padding="10dp" android:layout_width="wrap_content" android:background="@drawable/up_button" android:layout_alignParentTop="true" android:layout_alignRight="@+id/textView1" android:layout_marginRight="17dp" android:layout_marginTop="116dp"></Button>
+        <TextView android:id="@+id/status_text" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:text="@string/blank" android:layout_below="@+id/volume_down_button" android:layout_marginTop="104dp" android:layout_alignRight="@+id/channel_down_button" android:layout_toRightOf="@+id/volume_up_button"></TextView>
+        <Button android:id="@+id/channel_up_button" android:layout_height="wrap_content" android:padding="10dp" android:layout_width="wrap_content" android:background="@drawable/up_button" android:layout_above="@+id/power_button" android:layout_alignLeft="@+id/channel_down_button"></Button>
+        <Button android:id="@+id/channel_down_button" android:layout_height="wrap_content" android:padding="10dp" android:layout_width="wrap_content" android:background="@drawable/down_button" android:layout_above="@+id/status_text" android:layout_alignRight="@+id/textView2" android:layout_marginRight="16dp"></Button>
+    </RelativeLayout>
+
+</LinearLayout>
+
+
