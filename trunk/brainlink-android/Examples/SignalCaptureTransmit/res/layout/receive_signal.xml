@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1" android:id="@drawable/icon">
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="392dp" android:layout_weight="1">
+        <Button android:layout_height="wrap_content" android:id="@+id/Capture" android:text="@string/capture" android:layout_width="177dp" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:layout_marginTop="18dp"></Button>
+        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_below="@+id/Capture" android:layout_marginTop="16dp" android:id="@+id/CaptureText" android:layout_alignParentLeft="true" android:layout_alignParentRight="true" android:text="@string/none"></TextView>
+        <Button android:layout_height="wrap_content" android:text="@string/rightMove" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_toRightOf="@+id/storeButton" android:layout_marginLeft="16dp" android:id="@+id/moveToSend"></Button>
+        <RadioGroup android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Capture" android:layout_centerHorizontal="true" android:id="@+id/signalGroup">
+            <RadioButton android:layout_height="wrap_content" android:layout_marginTop="57dp" android:layout_width="wrap_content" android:checked="true" android:text="@string/signal1" android:id="@+id/radio1"></RadioButton>
+            <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/radio2" android:text="@string/signal2"></RadioButton>
+            <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/radio3" android:text="@string/signal3"></RadioButton>
+            <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/radio4" android:text="@string/signal4"></RadioButton>
+            <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/radio5" android:text="@string/signal5"></RadioButton>
+        </RadioGroup>
+        <TextView android:text="@string/none" android:layout_height="wrap_content" android:id="@+id/storeText" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_below="@+id/storeButton" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:layout_alignParentRight="true"></TextView>
+        <Button android:layout_height="wrap_content" android:id="@+id/storeButton" android:text="@string/store" android:layout_width="wrap_content" android:layout_below="@+id/signalGroup" android:layout_alignLeft="@+id/Capture" android:layout_alignRight="@+id/Capture"></Button>
+    </RelativeLayout>
+</LinearLayout>

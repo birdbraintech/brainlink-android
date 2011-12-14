@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1" android:id="@drawable/icon">
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="392dp" android:layout_weight="1">
+        <Button android:layout_alignParentTop="true" android:layout_marginTop="28dp" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:id="@+id/button1" android:text="@string/signal1" android:layout_width="177dp"></Button>
+        <Button android:layout_alignLeft="@+id/button3" android:layout_alignRight="@+id/button3" android:layout_marginTop="20dp" android:layout_below="@+id/button3" android:layout_height="wrap_content" android:id="@+id/button4" android:layout_width="wrap_content" android:text="@string/signal4"></Button>
+        <Button android:layout_alignLeft="@+id/button1" android:layout_alignRight="@+id/button1" android:layout_marginTop="18dp" android:layout_below="@+id/button1" android:layout_height="wrap_content" android:id="@+id/button2" android:layout_width="wrap_content" android:text="@string/signal2"></Button>
+        <Button android:layout_height="wrap_content" android:id="@+id/button3" android:layout_width="wrap_content" android:layout_below="@+id/button2" android:layout_alignLeft="@+id/button2" android:layout_marginTop="20dp" android:layout_alignRight="@+id/button2" android:text="@string/signal3"></Button>
+        <Button android:layout_height="wrap_content" android:id="@+id/button5" android:layout_width="wrap_content" android:layout_below="@+id/button4" android:layout_alignLeft="@+id/button4" android:layout_marginTop="20dp" android:layout_alignRight="@+id/button4" android:text="@string/signal5"></Button>
+        <SeekBar android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@+id/button5" android:layout_alignLeft="@+id/button5" android:layout_marginTop="37dp" android:layout_alignRight="@+id/button5" android:id="@+id/repeatTimeBar"></SeekBar>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/repeatTimeBar" android:layout_centerHorizontal="true" android:layout_marginTop="21dp" android:text="@string/norepeat" android:id="@+id/repeatTimeText"></TextView>
+        <Button android:layout_height="wrap_content" android:text="@string/rightMove" android:layout_width="wrap_content" android:layout_alignTop="@+id/button3" android:layout_alignParentRight="true" android:layout_marginRight="14dp" android:layout_marginTop="30dp" android:id="@+id/moveToCapture"></Button>
+    </RelativeLayout>
+</LinearLayout>
