@@ -36,14 +36,6 @@ public interface BrainLinkInterface
    boolean setFullColorLED(final int red, final int green, final int blue);
 
    /**
-    * Sets the full color LED to the given {@link Color}.
-    *
-    * @param   color sets the color of the LED
-    * @return <code>true</code> if LED was successfully set, <code>false</code> otherwise
-    */
-   //boolean setFullColorLED(final Color color);
-
-   /**
     * Returns the light sensor values; returns <code>null</code> if the light sensors could not be read.
     *
     * @return an int containing the light sensor value.
